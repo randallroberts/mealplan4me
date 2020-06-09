@@ -1,0 +1,15 @@
+@import './global/_reset.scss';
+@import "./global/_variables.scss";
+@import "./global/_mixins.scss";
+
+.container {
+
+  width: 100%;
+  
+}
+
+.header {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}

@@ -1,0 +1,30 @@
+.menu {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+
+    &__logo {
+        object-fit: contain;
+        width: 200px;
+        margin: 0 16px;
+    }
+
+    &__item {
+        list-style-type: none;
+        margin-top: 43px;
+
+        &--outer {
+            margin: 43px 16px 0;
+        }
+    }
+
+    &__link {
+        text-decoration: inherit;
+        color: black;
+    
+        &--active {
+            color: silver;
+        }
+    }
+}

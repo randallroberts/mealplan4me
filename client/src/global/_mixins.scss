@@ -1,0 +1,23 @@
+@import "variables";
+
+@mixin tablet {
+  @media screen and (min-width: $tablet-breakpoint) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media screen and (min-width: $desktop-breakpoint) {
+    @content;
+  }
+}
+
+@mixin container-padding {
+  padding: 0 16px;
+  width: 100%;
+}
+
+@mixin remove-spacing {
+  margin: 0;
+  padding: 0;
+}
