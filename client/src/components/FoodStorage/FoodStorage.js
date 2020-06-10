@@ -1,6 +1,7 @@
 import React from 'react';
 import './FoodStorage.scss';
-import FoodCategory from '../FoodCategory/FoodCategory';
+import FoodCategory from '../FoodCategory';
+import NewIngredient from '../NewIngredient';
 
 class FoodStorage extends React.Component {
     constructor () {
@@ -15,6 +16,7 @@ class FoodStorage extends React.Component {
     render () {
         return (
             <section className="food-storage">
+                <NewIngredient />
                 <FoodCategory />
             </section>
         )
