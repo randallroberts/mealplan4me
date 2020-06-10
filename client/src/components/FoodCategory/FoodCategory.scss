@@ -1,0 +1,25 @@
+@import "../../global/variables";
+@import "../../global/mixins";
+@import "../../global/reset";
+
+.food-category {
+    border: 1px solid $shadow;
+    border-radius: 4px;
+    
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    
+
+    &:hover {
+        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    }
+
+    &__title {
+        width: 100%;
+        padding: $padding-std;
+    }
+
+    &__divider {
+        width: 100%;
+    }
+}

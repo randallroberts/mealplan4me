@@ -1,5 +1,6 @@
 import React from 'react';
 import './FoodCategory.scss';
+import Ingredient from "../Ingredient"
 
 class FoodCategory extends React.Component {
     constructor () {
@@ -13,9 +14,16 @@ class FoodCategory extends React.Component {
 
     render () {
         return (
-            <div>
-                Hi
-            </div>
+            <section className="food-category">
+                <h3 className="food-category__title">
+                  Category
+                </h3>
+                <hr className="food-category__divider" />
+                <div className="food-category__list">
+                  <Ingredient />
+                </div>
+
+            </section>
         )
     }
 }

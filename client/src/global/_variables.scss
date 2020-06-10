@@ -2,11 +2,16 @@
 $tablet-breakpoint: 768px;
 $desktop-breakpoint: 1200px;
 
+$max-container: 1500px;
+
 /* Colours */
 $paragraph: #323232;
+$paragraph-active: #323232;
 $text-label: #AFAFAF;
 $text-field-border: #E1E1E1;
+$text-field-border-selected: #57b9ff;
 $text-field-bg: #FAFAFA;
+$shadow: #323232;
 
 /* Spacing standards */
 $padding-std: 16px;

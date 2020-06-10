@@ -12,11 +12,6 @@
   }
 }
 
-@mixin container-padding {
-  padding: 0 16px;
-  width: 100%;
-}
-
 @mixin remove-spacing {
   margin: 0;
   padding: 0;

@@ -1,5 +1,6 @@
 import React from 'react';
 import './FoodStorage.scss';
+import FoodCategory from '../FoodCategory/FoodCategory';
 
 class FoodStorage extends React.Component {
     constructor () {
@@ -14,7 +15,7 @@ class FoodStorage extends React.Component {
     render () {
         return (
             <section className="food-storage">
-                Hi
+                <FoodCategory />
             </section>
         )
     }

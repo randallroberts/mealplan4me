@@ -17,7 +17,7 @@ function Menu() {
                 Recipes
               </NavLink>
             </li>
-            <NavLink to="/" className="menu__link" activeClassName="menu__link--active">
+            <NavLink to="/" className="menu__link">
               <img className="menu__logo" src={mealPlanLogo} alt="Meal Plan 4 Me Logo" />
             </NavLink>
             <li className="menu__item">

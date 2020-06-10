@@ -11,3 +11,12 @@ html {
     font-size: 16px;
 }
 
+/* Typography standards */
+@font-face {
+    font-family: 'Roboto';
+    src: url('https://fonts.gstatic.com/s/roboto/v20/KFOmCnqEu92Fr1Mu72xKOzY.woff2') format('woff2');
+}
+
+body {
+    font-family: 'Roboto';
+}

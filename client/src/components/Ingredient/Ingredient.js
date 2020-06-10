@@ -13,8 +13,8 @@ class Ingredient extends React.Component {
 
     render () {
         return (
-            <div>
-                Hi
+            <div className="ingredient">
+                Ingredient Name
             </div>
         )
     }

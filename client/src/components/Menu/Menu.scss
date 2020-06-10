@@ -1,3 +1,7 @@
+@import "../../global/variables";
+@import "../../global/mixins";
+@import "../../global/reset";
+
 .menu {
     display: flex;
     flex-direction: row;
@@ -21,10 +25,15 @@
 
     &__link {
         text-decoration: inherit;
-        color: black;
+        color: $paragraph;
+        padding: 0 8px;
+
     
         &--active {
-            color: silver;
+            color: $paragraph;
+            border: none;
+            border-radius: 4px;
+            border-bottom: 2px solid $paragraph-active;
         }
     }
 }
