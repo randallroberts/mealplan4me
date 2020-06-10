@@ -3,5 +3,28 @@
 @import "../../global/reset";
 
 .ingredient {
-    padding: $padding-std;
+    padding: 4px $padding-std;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: nowrap;
+
+    &__info-icon {
+        width: 1rem;
+        margin-left: 16px;
+    }
+
+    &__details {
+        margin-left: 24px;
+        &--hide {
+            display: none;
+        }
+    
+        &--show {
+            display: unset;
+        }
+    }
+    
+    
 }

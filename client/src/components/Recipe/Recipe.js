@@ -6,13 +6,33 @@ class Recipe extends React.Component {
     constructor () {
       super();
       this.state = {
-        //showModal: false
-      };  
+        isSelected: false
+      };
+    }
+
+    toggleSelection (e) {
+      e.preventDefault();
+
+      console.log(this.state)
+      if (this.state.isSelected === false) {
+        console.log("set to true");
+        this.setState({
+          isSelected: true
+        });
+      } else {
+        console.log("set to false");
+        this.setState({
+          isSelected: false
+        });
+      }
     }
 
     render () {
         return (
-          <section className={this.props.isSelected ? "recipe recipe--selected" : "recipe"} >
+          <div
+            className={this.state.isSelected ? "recipe recipe--selected" : "recipe"}
+            onClick={this.toggleSelection.bind(this)}
+            >
             <h3 className="recipe__title">
               Recipe Title
             </h3>
@@ -24,7 +44,7 @@ class Recipe extends React.Component {
             <div className="recipe__ingredients">
               Recipe ing1, recipe ing2...
             </div>
-          </section>
+          </div>
         )
     }
 }

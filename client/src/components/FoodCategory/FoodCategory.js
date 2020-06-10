@@ -14,16 +14,16 @@ class FoodCategory extends React.Component {
 
     render () {
         return (
-            <section className="food-category">
-                <h3 className="food-category__title">
-                  Category
-                </h3>
-                <hr className="food-category__divider" />
-                <div className="food-category__list">
-                  <Ingredient />
-                </div>
-
-            </section>
+          <section className="food-category">
+              <h3 className="food-category__title">
+                Food Category
+              </h3>
+              <hr className="food-category__divider" />
+              <div className="food-category__details">
+                <Ingredient />
+                <Ingredient />
+              </div>
+          </section>
         )
     }
 }
