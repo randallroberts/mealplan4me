@@ -4,12 +4,13 @@ Connect to MongoDB using the Mongo shell While the MongoDB daemon is running, fr
 */
 
 const express = require('express');
-require('dotenv').config();
 const cors = require('cors');
 const axios = require("axios");
 const db = require('./data/db');
+const Ingredient = require("./data/models/Ingredient");
 const app = express();
 app.use(express.json());
+require('dotenv').config();
 const apiPort = process.env.LOCAL_API_PORT;
 
 // app.use(bodyParser.urlencoded({ extended: true }));
@@ -18,14 +19,11 @@ app.use(cors());
 
 db.on('error', console.error.bind(console, 'MongoDB connection error:'))
 
-app.get('/', (req, res) => {
-    res.send('Hello World!')
-});
-
-//Front End adds (POST) new ingredient
 /**
- * POST /inventory
- * parameter: Name
+ * GET /inventory/:ingr
+ * parameter: Name of ingredient <String>
+ * 
+ * body: userID <String>
  * 
  * Returns ingredient data for the first match from Edamam. Sample response below:
  * {
@@ -45,15 +43,53 @@ app.get('/', (req, res) => {
         }
     }
  */
+app.get("/ingredient/:id", (req, res) => {
 
+    // Use Mongoose to get the Product by the id
+    Ingredient.findOne({ _id: req.params.id })
+        .then(function(dbIngredient) {
+            res.json(dbIngredient);
+        })
+        .catch(function(err) {
+           console.log(err);
+           res.json(err);
+        });
+});
 
+//Front End adds (POST) new ingredient
+/**
+ * POST /ingredient/:ingr
+ * parameter: Name of ingredient <String>
+ * 
+ * body: userID <String>
+ * 
+ * Returns ingredient data for the first match from Edamam. Sample response below:
+ * {
+        _id: 5ee17a83b827cd29ec8aab4d,
+        ingredientEdamamId: 'food_a1gb9ubb72c7snbuxr3weagwv0dd',
+        name: 'apple',
+        owner: 'Randall',
+        measurement: { quantity: 1, unit: 'unit' },
+        datePurchased: 2020-06-11T00:27:47.013Z,
+        store: 'Unknown',
+        price: 0,
+        nutrition: { calories: 52, protein: 0.26, fats: 0.17, carbs: 13.81 },
+        __v: 0
+    }
+
+ */
 app.post('/ingredient/:ingr', (req, res) => {
     
     // console.log(req.params);
 
-    if(!req.params.ingr){
-        console.err("Missing parameter for food item");
+    if(!req.params.ingr) {
+        console.error("Missing parameter for food item");
         res.status(400).send("Missing Parameter: Please include ingredient to search for");
+        return;
+    }
+    if(!req.body.userId) {
+        console.error("Missing User ID in Body");
+        res.status(400).send("Missing User ID in Body");
         return;
     }
 
@@ -65,12 +101,39 @@ app.post('/ingredient/:ingr', (req, res) => {
     try{
         axios.get(`${nutritionURL}?ingr=${req.params.ingr}&app_id=${nutritionAppId}&app_key=${nutritionAppKey}`)
         .then(response => {
-            console.log("edamam returned:" + JSON.stringify(response.data.parsed[0]));
+            console.log("Edamam returned:" + JSON.stringify(response.data.parsed[0].food.foodId));
+            
             //Store result in MongoDB
+            const newIngredient = new Ingredient({
+                ingredientEdamamId: response.data.parsed[0].food.foodId,
+                name: req.params.ingr,
+                owner: req.body.userId,
+                measurement: {
+                    quantity: 1,
+                    unit: "unit"
+                },
+                datePurchased: Date.now(),
+                store: "Unknown",
+                price: 0,
+                nutrition: {
+                    calories: response.data.parsed[0].food.nutrients.ENERC_KCAL,
+                    protein: response.data.parsed[0].food.nutrients.PROCNT,
+                    fats: response.data.parsed[0].food.nutrients.FAT,
+                    carbs: response.data.parsed[0].food.nutrients.CHOCDF
+                }
+            });
 
-
-            //Send the ingredient back to the front end
-            res.status(200).json(response.data.parsed[0]);
+            Ingredient.create(newIngredient)
+            .then((dbIngredient) => {
+                //Send the ingredient back to the front end
+                console.log(dbIngredient);
+                res.json(dbIngredient);
+            })
+            .catch(function(err) {
+                // If an error occurred, log it
+                console.log(err);
+                res.json(err);
+            });
         })
         .catch(err => {
             console.log("Failed to get ingredient data: ", err)
