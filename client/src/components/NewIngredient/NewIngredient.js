@@ -1,7 +1,8 @@
 import React from 'react';
+import AsyncCreatableSelect from 'react-select/async-creatable';
 import './NewIngredient.scss';
-import AddIcon from "../../assets/icons/plus.svg"
-import AddImg from "../../assets/icons/uploadImg.svg"
+// import AddIcon from "../../assets/icons/plus.svg"
+// import AddImg from "../../assets/icons/uploadImg.svg"
 
 class NewIngredient extends React.Component {
     constructor () {
@@ -11,10 +12,36 @@ class NewIngredient extends React.Component {
       };
     }
 
+    defaultStores = [
+      { label: "Metro", value: "Metro" },
+      { label: "No Frills", value: "No Frills" },
+      { label: "Walmart", value: "Walmart" },
+      { label: "Freshco", value: "Freshco" },
+      { label: "Nations", value: "Nations" },
+      { label: "Farmer's Market", value: "Farmer's Market" },
+    ];
+
+    addStore(storeName) {
+      this.defaultStores.push({ label: storeName, value: storeName })
+    }
+
+    filterStores = (inputValue) => {
+      return this.defaultStores.filter(i =>
+        i.label.toLowerCase().includes(inputValue.toLowerCase())
+      );
+    };
+
+    searchStores = inputValue =>
+      new Promise(resolve => {
+        setTimeout(() => {
+          resolve(this.filterStores(inputValue));
+        }, 1000);
+      });
+
     render () {
       return (
         <>
-          <section className="new-ingredient">
+          <form className="new-ingredient" name="newIngr" onSubmit={this.props.addIngredient.bind(this)}>
               <h3 className="new-ingredient__title">
                 Add New Ingredient
               </h3>
@@ -23,20 +50,41 @@ class NewIngredient extends React.Component {
                 <input
                   className="new-ingredient__input"
                   type="text"
+                  name="ingName"
                   placeholder="Enter new ingredient"
                 />
-                <img
-                  className="new-ingredient__info-icon"
-                  src={AddIcon}
+                <button
+                  className="new-ingredient__btn new-ingredient__add-ingr"
                   alt="Submit Text"
-                />
-                <img
-                  className="new-ingredient__info-icon"
-                  src={AddImg}
+                  name="submitText"
+                >
+                </button>
+                <button
+                  className="new-ingredient__btn new-ingredient__add-receipt"
                   alt="Scan Receipt"
-                />
+                  name="submitImg"
+                >
+                </button>
               </div>
-          </section>
+              <div className="new-ingredient__details">
+              
+              <AsyncCreatableSelect
+                className="new-ingredient__select"
+                name="ingStore"
+                placeholder="Purchased at..."
+                cacheOptions
+                onCreateOption={this.addStore.bind(this)}
+                defaultOptions={this.defaultStores}
+                loadOptions={this.searchStores}
+              />
+                
+                {/* measurement.quantity
+                  measurement.unit
+                  datePurchased
+                  price
+                  store */}
+              </div>
+          </form>
         </>
       )
     }

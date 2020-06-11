@@ -28,9 +28,28 @@
         border-radius: 4px;
     }
 
-    &__info-icon {
-        width: 1rem;
+    &__select {
+        // border: 1px solid $text-field-border;
+        width: 100%;
+    }
+
+    &__btn {
+        width: 25px;
+        height: 25px;
         margin-left: 8px;
+        border: none;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+        background-color: #FFF;
+    }
+
+    &__add-ingr {
+        background-image: url("../../assets/icons/plus.svg");
+    }
+
+    &__add-receipt {
+        background-image: url("../../assets/icons/uploadImg.svg");
     }
 
     &__details {
@@ -39,6 +58,4 @@
         display: flex;
         align-items: center;
     }
-    
-    
 }

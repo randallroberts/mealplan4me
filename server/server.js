@@ -62,6 +62,7 @@ app.get("/ingredient/:id", (req, res) => {
  * parameter: Name of ingredient <String>
  * 
  * body: userID <String>
+ * store: storeName <String> (optional)
  * 
  * Returns ingredient data for the first match from Edamam. Sample response below:
  * {
@@ -101,7 +102,7 @@ app.post('/ingredient/:ingr', (req, res) => {
     try{
         axios.get(`${nutritionURL}?ingr=${req.params.ingr}&app_id=${nutritionAppId}&app_key=${nutritionAppKey}`)
         .then(response => {
-            console.log("Edamam returned:" + JSON.stringify(response.data.parsed[0].food.foodId));
+            console.log("Edamam returned:" + JSON.stringify(response.data.parsed[0].food));
             
             //Store result in MongoDB
             const newIngredient = new Ingredient({
@@ -113,7 +114,7 @@ app.post('/ingredient/:ingr', (req, res) => {
                     unit: "unit"
                 },
                 datePurchased: Date.now(),
-                store: "Unknown",
+                store: req.body.store ? req.body.store : "Uncategorized",
                 price: 0,
                 nutrition: {
                     calories: response.data.parsed[0].food.nutrients.ENERC_KCAL,

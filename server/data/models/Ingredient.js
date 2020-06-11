@@ -25,6 +25,11 @@ const IngredientSchema = new Schema({
             required: true
         }
     },
+    category: {
+        type: String,
+        required: true,
+        default: "Uncategorized"
+    },
     datePurchased: {
         type: Date,
         required: true,
