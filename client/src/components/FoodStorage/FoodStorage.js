@@ -10,6 +10,24 @@ class FoodStorage extends React.Component {
       this.state = [];
 
       this.categories = [];
+      this.addIngredient = this.addIngredient.bind(this);
+    }
+
+    updateIngredients (newIngr) {
+      //if the category isn't already known, add it
+      if (!this.categories.includes(newIngr.category)) {
+        console.log("Added new category: ", newIngr.category);
+        this.categories.push(newIngr.category);
+      } else {
+        console.log("Category exists: ", newIngr.category);
+      }
+      //add the new ingredient to state
+      console.log(this.state)
+      let newState = this.state.ingredients.slice();
+      newState.push(newIngr);
+      console.log("New State: ", newState);
+      this.setState({
+        ingredients: newState});
     }
 
     getIngredients() {
@@ -41,7 +59,7 @@ class FoodStorage extends React.Component {
       })
       .then(response => {
         console.log("POST successful:", response.data);
-        //this.props.updateProducts();
+        this.updateIngredients(response.data);
       })
       .catch(error => {
         console.error(error);

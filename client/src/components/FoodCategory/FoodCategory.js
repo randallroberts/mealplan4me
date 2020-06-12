@@ -3,9 +3,6 @@ import './FoodCategory.scss';
 import Ingredient from "../Ingredient"
 
 class FoodCategory extends React.Component {
-    constructor () {
-      super();
-    }
 
     render () {
         return (
