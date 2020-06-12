@@ -30,6 +30,10 @@ const IngredientSchema = new Schema({
         required: true,
         default: "Other"
     },
+    image: {
+        type: String,
+        required: false
+    },
     datePurchased: {
         type: Date,
         required: true,

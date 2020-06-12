@@ -163,7 +163,8 @@ app.post('/ingredient/:ingr', (req, res) => {
                     protein: response.data.parsed[0].food.nutrients.PROCNT,
                     fats: response.data.parsed[0].food.nutrients.FAT,
                     carbs: response.data.parsed[0].food.nutrients.CHOCDF
-                }
+                },
+                image: response.data.parsed[0].food.image
             });
 
             Ingredient.create(newIngredient)
