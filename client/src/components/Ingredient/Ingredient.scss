@@ -16,7 +16,10 @@
     }
 
     &__details {
+        width: 100%;
+        padding: $padding-std;
         margin-left: 24px;
+        
         &--hide {
             display: none;
         }

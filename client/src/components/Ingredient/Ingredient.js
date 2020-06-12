@@ -8,19 +8,17 @@ class Ingredient extends React.Component {
       this.state = {
         details: false
       };
+
+      
     }
 
     toggleDetails (e) {
       e.preventDefault();
-
-      console.log(this.state)
       if (this.state.details === false) {
-        console.log("set to true");
         this.setState({
           details: true
         });
       } else {
-        console.log("set to false");
         this.setState({
           details: false
         });
@@ -31,7 +29,7 @@ class Ingredient extends React.Component {
         return (
           <>
             <div className="ingredient" onClick={this.toggleDetails.bind(this)}>
-                <p>Ingredient Name</p>
+                <p>{this.props.data.name}</p>
                 <img
                   className="ingredient__info-icon"
                   src={infoIcon}
@@ -39,7 +37,22 @@ class Ingredient extends React.Component {
                 />
             </div>
             <div className={this.state.details === true ? "ingredient__details ingredient__details--show" : "ingredient__details ingredient__details--hide"}>
-              Extra info
+              <p>
+                Quantity: {this.props.data.measurement.quantity} {this.props.data.measurement.unit}
+              </p>
+              <p>
+                Purchased: {this.props.data.datePurchased}
+              </p>
+              <ul>
+                <li>From:{this.props.data.store}</li>
+                <li>For: ${this.props.data.price}</li>
+              </ul>
+              <ul>
+                <li>Cal: {this.props.data.nutrition.calories}</li>
+                <li>Prot: {this.props.data.nutrition.protein}</li>
+                <li>Fats: {this.props.data.nutrition.fats}</li>
+                <li>Carbs: {this.props.data.nutrition.carbs}</li>
+              </ul>
             </div>
           </>
         )

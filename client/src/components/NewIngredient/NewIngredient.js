@@ -11,6 +11,14 @@ class NewIngredient extends React.Component {
         //showModal: false
       };
     }
+    defaultCats = [
+      { label: "Produce", value: "Produce" },
+      { label: "Dairy", value: "Dairy" },
+      { label: "Meats", value: "Meats" },
+      { label: "Dry Goods", value: "Dry Goods" },
+      { label: "Frozen", value: "Frozen" },
+      { label: "Other", value: "Other" }
+    ];
 
     defaultStores = [
       { label: "Metro", value: "Metro" },
@@ -18,8 +26,25 @@ class NewIngredient extends React.Component {
       { label: "Walmart", value: "Walmart" },
       { label: "Freshco", value: "Freshco" },
       { label: "Nations", value: "Nations" },
-      { label: "Farmer's Market", value: "Farmer's Market" },
+      { label: "Farmer's Market", value: "Farmer's Market" }
     ];
+
+    addCategory(categoryName) {
+      this.defaultCats.push({ label: categoryName, value: categoryName })
+    }
+
+    filterCats = (inputValue) => {
+      return this.defaultCats.filter(i =>
+        i.label.toLowerCase().includes(inputValue.toLowerCase())
+      );
+    };
+
+    searchStores = inputValue =>
+      new Promise(resolve => {
+        setTimeout(() => {
+          resolve(this.filterCats(inputValue));
+        }, 1000);
+      });
 
     addStore(storeName) {
       this.defaultStores.push({ label: storeName, value: storeName })
@@ -66,8 +91,18 @@ class NewIngredient extends React.Component {
                 >
                 </button>
               </div>
-              <div className="new-ingredient__details">
-              
+              <div className="new-ingredient__details new-ingredient__additional-details">
+              {/* Food Category */}
+              <AsyncCreatableSelect
+                className="new-ingredient__select"
+                name="ingCategory"
+                placeholder="Category of Food..."
+                cacheOptions
+                onCreateOption={this.addCategory.bind(this)}
+                defaultOptions={this.defaultCats}
+                loadOptions={this.searchCats}
+              />
+              {/* Store Name */}
               <AsyncCreatableSelect
                 className="new-ingredient__select"
                 name="ingStore"

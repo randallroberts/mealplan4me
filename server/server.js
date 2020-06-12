@@ -20,7 +20,46 @@ app.use(cors());
 db.on('error', console.error.bind(console, 'MongoDB connection error:'))
 
 /**
- * GET /inventory/:ingr
+ * GET /ingredients
+ * 
+ * body: userID <String>
+ * 
+ *  Returns array of ingredient data. Sample response below:
+ *  [
+ *      {
+            "food": {
+                "foodId": "food_a1gb9ubb72c7snbuxr3weagwv0dd",
+                "label": "apple",
+                "nutrients": {
+                    "ENERC_KCAL": 52,
+                    "PROCNT": 0.26,
+                    "FAT": 0.17,
+                    "CHOCDF": 13.81,
+                    "FIBTG": 2.4
+                },
+                "category": "Generic foods",
+                "categoryLabel": "food",
+                "image": "https://www.edamam.com/food-img/42c/42c006401027d35add93113548eeaae6.jpg"
+            }
+        }
+    ]
+ */
+app.get("/ingredients/:userId", (req, res) => {
+
+    // Use Mongoose to get all ingredients
+    Ingredient.find({ owner: req.params.userId})
+        .then(function(dbIngredients) {
+            console.log("All Ingredients:", dbIngredients);
+            res.json(dbIngredients);
+        })
+        .catch(function(err) {
+           console.log(err);
+           res.json(err);
+        });
+});
+
+/**
+ * GET /ingredient/:ingr
  * parameter: Name of ingredient <String>
  * 
  * body: userID <String>
@@ -47,10 +86,10 @@ app.get("/ingredient/:id", (req, res) => {
 
     // Use Mongoose to get the Product by the id
     Ingredient.findOne({ _id: req.params.id })
-        .then(function(dbIngredient) {
+        .then((dbIngredient) => {
             res.json(dbIngredient);
         })
-        .catch(function(err) {
+        .catch((err) => {
            console.log(err);
            res.json(err);
         });
@@ -63,6 +102,7 @@ app.get("/ingredient/:id", (req, res) => {
  * 
  * body: userID <String>
  * store: storeName <String> (optional)
+ * category: Type of food <String> (optional)
  * 
  * Returns ingredient data for the first match from Edamam. Sample response below:
  * {
@@ -70,9 +110,10 @@ app.get("/ingredient/:id", (req, res) => {
         ingredientEdamamId: 'food_a1gb9ubb72c7snbuxr3weagwv0dd',
         name: 'apple',
         owner: 'Randall',
+        category: "Dairy"
         measurement: { quantity: 1, unit: 'unit' },
         datePurchased: 2020-06-11T00:27:47.013Z,
-        store: 'Unknown',
+        store: 'No Frills',
         price: 0,
         nutrition: { calories: 52, protein: 0.26, fats: 0.17, carbs: 13.81 },
         __v: 0
@@ -109,6 +150,7 @@ app.post('/ingredient/:ingr', (req, res) => {
                 ingredientEdamamId: response.data.parsed[0].food.foodId,
                 name: req.params.ingr,
                 owner: req.body.userId,
+                category: req.body.category ? req.body.category : "Other",
                 measurement: {
                     quantity: 1,
                     unit: "unit"

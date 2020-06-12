@@ -5,23 +5,19 @@ import Ingredient from "../Ingredient"
 class FoodCategory extends React.Component {
     constructor () {
       super();
-      this.state = {
-        //showModal: false
-      };
-      
-      
     }
 
     render () {
         return (
           <section className="food-category">
               <h3 className="food-category__title">
-                Food Category
+                {this.props.category}
               </h3>
               <hr className="food-category__divider" />
               <div className="food-category__details">
-                <Ingredient />
-                <Ingredient />
+                {this.props.ingredients.map(ingr => {
+                  return <Ingredient data={ingr} />
+                })}
               </div>
           </section>
         )

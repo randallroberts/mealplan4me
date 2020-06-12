@@ -7,9 +7,25 @@ import axios from 'axios';
 class FoodStorage extends React.Component {
     constructor () {
       super();
-      this.state = {
-        //showModal: false
-      };
+      this.state = [];
+
+      this.categories = [];
+    }
+
+    getIngredients() {
+      axios.get("http://localhost:3001/ingredients/Randall")
+      .then (response => {
+        console.log(response.data)
+        //make a set of categories
+        this.categories = [...new Set(
+          response.data.map(ingredient => ingredient.category))];
+        this.setState({
+          ingredients: response.data
+        })
+      })
+      .catch(error => {
+        console.error(error);
+      });
     }
 
     addIngredient (e) {
@@ -20,7 +36,8 @@ class FoodStorage extends React.Component {
       axios
       .post(`http://localhost:3001/ingredient/${e.target.ingName.value}`, {
         "userId": "Randall",
-        "store": e.target.ingStore.value
+        "store": e.target.ingStore.value,
+        "category": e.target.ingCategory.value
       })
       .then(response => {
         console.log("POST successful:", response.data);
@@ -31,11 +48,24 @@ class FoodStorage extends React.Component {
       });
     }
 
+    componentDidMount() {
+      this.getIngredients();
+    }
+
     render () {
         return (
             <section className="food-storage">
                 <NewIngredient addIngredient={this.addIngredient} />
-                <FoodCategory />
+                {/* For each category, filter our ingredients list and pass as prop to that category's food list */}
+                {this.categories.map(category => {
+                  return ( <FoodCategory
+                    category={category}
+                    ingredients={this.state.ingredients
+                      .filter(ingredient => ingredient.category === category)}
+                  />)
+                  
+                })}
+                
             </section>
         )
     }

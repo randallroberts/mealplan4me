@@ -28,7 +28,7 @@ const IngredientSchema = new Schema({
     category: {
         type: String,
         required: true,
-        default: "Uncategorized"
+        default: "Other"
     },
     datePurchased: {
         type: Date,
