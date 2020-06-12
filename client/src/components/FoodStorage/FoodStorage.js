@@ -18,9 +18,8 @@ class FoodStorage extends React.Component {
       if (!this.categories.includes(newIngr.category)) {
         console.log("Added new category: ", newIngr.category);
         this.categories.push(newIngr.category);
-      } else {
-        console.log("Category exists: ", newIngr.category);
       }
+      
       //add the new ingredient to state
       console.log(this.state)
       let newState = this.state.ingredients.slice();

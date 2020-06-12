@@ -20,6 +20,43 @@ app.use(cors());
 db.on('error', console.error.bind(console, 'MongoDB connection error:'))
 
 /**
+ * GET /recipes
+ * 
+ */
+app.get("/recipes/:ingredients", (req, res) => {
+
+    // console.log(req.params);
+
+    // if(!req.params.ingredients) {
+    //     console.error("Missing ingredient parameter for recipe search");
+    //     res.status(400).send("Missing Parameter: Please include ingredient to search for");
+    //     return;
+    // }
+
+    let recipeURL = process.env.RECIPE_URL;
+    let recipeAppId = process.env.RECIPE_API_ID;
+    let recipeAppKey = process.env.RECIPE_API_KEY;
+
+    //Connect to Edamam Recipe Search API
+    try{
+        axios.get(`${recipeURL}?q=${req.params.ingredients}&app_id=${recipeAppId}&app_key=${recipeAppKey}`)
+        .then(response => {
+            console.log(`${recipeURL}?q=${req.params.ingredients}&app_id=${recipeAppId}&app_key=${recipeAppKey}`);
+            console.log("Edamam returned:" + JSON.stringify(response.data));
+            res.json(response.data);
+        })
+        .catch(err => {
+            console.log("Failed to get ingredient data: ", err)
+            res.status(400).send(err)
+        });
+    }
+    catch(err){
+        console.error("Couldn't connect to Edamam", err);
+    }
+});
+
+
+/**
  * GET /ingredients
  * 
  * body: userID <String>
@@ -53,8 +90,8 @@ app.get("/ingredients/:userId", (req, res) => {
             res.json(dbIngredients);
         })
         .catch(function(err) {
-           console.log(err);
-           res.json(err);
+            console.log(err);
+            res.json(err);
         });
 });
 
