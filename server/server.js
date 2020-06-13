@@ -742,7 +742,7 @@ app.get("/recipes/:ingredients", (req, res) => {
         axios.get(`${recipeURL}?q=${req.params.ingredients}&app_id=${recipeAppId}&app_key=${recipeAppKey}&from=0&to=100`)
         .then(response => {
             res.json(response.data);
-            console.log("Edamam recipes:" + JSON.stringify(response.data));
+            console.log("Edamam recipes returned");
         })
         .catch(err => {
             console.log("Failed to get recipe data: ", err)
