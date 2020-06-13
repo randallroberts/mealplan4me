@@ -2,18 +2,22 @@
 @import "../../global/mixins";
 @import "../../global/reset";
 
-.food-storage {
-    width: 100%;
-    padding: $padding-std;
-    
+.food-categories {
     display: flex;
+    flex-direction: row;
     flex-wrap: wrap;
-    justify-content: flex-start;
 
+    padding: $padding-std;
+
+    &--hide {
+        display: none;
+    }
 }
 
 .ingredient-list {
     display: flex;
     flex-direction: column;
+    justify-content: flex-start;
+    padding: $padding-std;
     
 }

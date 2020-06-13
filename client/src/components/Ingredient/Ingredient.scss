@@ -5,6 +5,10 @@
 .ingredient {
     padding: 4px $padding-std;
 
+    &--selected {
+        border: 3px solid $text-field-border-selected;
+    }
+
     &__overview {
         width: 100%;
         display: flex;

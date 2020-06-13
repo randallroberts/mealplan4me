@@ -13,7 +13,10 @@ class FoodCategory extends React.Component {
               <hr className="food-category__divider" />
               <div className="food-category__details">
                 {this.props.ingredients.map((ingr, key) => {
-                  return <Ingredient key={key} data={ingr} />
+                  return <Ingredient 
+                    key={key}
+                    data={ingr}
+                    showDetails={true} />
                 })}
               </div>
           </section>

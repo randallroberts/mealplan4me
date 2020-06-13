@@ -71,15 +71,17 @@ class FoodStorage extends React.Component {
         return (
           <>
             <aside className="ingredient-list">
+              <NewIngredient addIngredient={this.addIngredient} />
+              {/* If we're displaying simple details */}
               {((this.state.ingredients) && (!this.props.details)) ? 
                   this.state.ingredients.map( (ingredient, key) => {
-                    return ( <Ingredient key={key} data={ingredient} details={false} />)
+                    return ( <Ingredient key={key} data={ingredient} showDetails={false} />)
                   }) : "" }
-              <NewIngredient addIngredient={this.addIngredient} />
-            </aside>
-            <section className="food-storage">
               
-              {/* Do we display simple details or all details of the ingredients? */}
+            </aside>
+
+            <section className={this.props.details ? "food-categories" : "food-categories--hide"}>
+              {/* If we're displaying all details of the ingredients */}
               {this.props.details ?
                 (this.categories.map((category, key) => {
                   return ( <FoodCategory

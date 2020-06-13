@@ -12,19 +12,7 @@ class Recipe extends React.Component {
 
     toggleSelection (e) {
       e.preventDefault();
-
-      console.log(this.state)
-      if (this.state.isSelected === false) {
-        console.log("set to true");
-        this.setState({
-          isSelected: true
-        });
-      } else {
-        console.log("set to false");
-        this.setState({
-          isSelected: false
-        });
-      }
+      this.setState({ isSelected: !this.state.isSelected });
     }
 
     render () {

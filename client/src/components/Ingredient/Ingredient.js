@@ -7,28 +7,27 @@ class Ingredient extends React.Component {
     constructor () {
       super();
       this.state = {
-        details: false
+        details: false,
+        isSelected: false
       };
       
     }
 
+    toggleSelection (e) {
+      e.preventDefault();
+      this.setState({ isSelected: !this.state.isSelected });
+    }
+
     toggleDetails (e) {
       e.preventDefault();
-      if (this.state.details === false) {
-        this.setState({
-          details: true
-        });
-      } else {
-        this.setState({
-          details: false
-        });
-      }
+      this.setState({ details: !this.state.details });
     }
 
     render () {
         return (
           <>
-            <div className="ingredient" onClick={this.toggleDetails.bind(this)}>
+            <div className={this.state.isSelected ? "ingredient ingredient--selected" : "ingredient"}
+              onClick={ this.props.showDetails ? this.toggleDetails.bind(this) : this.toggleSelection.bind(this)} >
               <div className="ingredient__overview">
                 <p>{this.props.data.name}</p>
                 <img

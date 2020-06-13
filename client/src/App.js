@@ -21,6 +21,7 @@ function App() {
         <header className="header">
           <Menu />
         </header>
+        <main className="main">
         <Switch>
           <Route path="/" exact>
             <Redirect to="/recipes" />
@@ -31,6 +32,7 @@ function App() {
           <Route path="/meals" component={MealPlan} />
           <Route path="/goals" component={Goals} />
         </Switch>
+        </main>
       </BrowserRouter>
     </div>
   );
