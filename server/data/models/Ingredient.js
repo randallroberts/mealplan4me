@@ -15,7 +15,7 @@ const IngredientSchema = new Schema({
         type: String,
         required: true
     },
-    isSelected: {
+    liked: {
         type: Boolean,
         required: true,
         default: false

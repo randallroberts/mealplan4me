@@ -8,7 +8,7 @@ import axios from 'axios';
 class FoodStorage extends React.Component {
     constructor () {
       super();
-      this.state = [];
+      this.state = {};
 
       this.categories = [];
       this.addIngredient = this.addIngredient.bind(this);

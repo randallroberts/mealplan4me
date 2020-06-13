@@ -826,8 +826,8 @@ app.get("/ingredient/:id", (req, res) => {
             res.json(dbIngredient);
         })
         .catch((err) => {
-           console.log(err);
-           res.json(err);
+            console.log(err);
+            res.json(err);
         });
 });
 
@@ -886,6 +886,7 @@ app.post('/ingredient/:ingr', (req, res) => {
                 ingredientEdamamId: response.data.parsed[0].food.foodId,
                 name: req.params.ingr,
                 owner: req.body.userId,
+                liked: false,
                 category: req.body.category ? req.body.category : "Other",
                 measurement: {
                     quantity: 1,
