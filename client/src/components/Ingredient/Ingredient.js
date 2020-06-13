@@ -9,7 +9,6 @@ class Ingredient extends React.Component {
       this.state = {
         details: false
       };
-
       
     }
 

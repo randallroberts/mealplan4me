@@ -2,6 +2,7 @@ import React from 'react';
 import './FoodStorage.scss';
 import FoodCategory from '../FoodCategory';
 import NewIngredient from '../NewIngredient';
+import Ingredient from '../Ingredient';
 import axios from 'axios';
 
 class FoodStorage extends React.Component {
@@ -21,18 +22,17 @@ class FoodStorage extends React.Component {
       }
       
       //add the new ingredient to state
-      console.log(this.state)
       let newState = this.state.ingredients.slice();
       newState.push(newIngr);
-      console.log("New State: ", newState);
+      
       this.setState({
-        ingredients: newState});
+        ingredients: newState
+      });
     }
 
     getIngredients() {
       axios.get("http://localhost:3001/ingredients/Randall")
       .then (response => {
-        console.log(response.data)
         //make a set of categories
         this.categories = [...new Set(
           response.data.map(ingredient => ingredient.category))];
@@ -47,9 +47,7 @@ class FoodStorage extends React.Component {
 
     addIngredient (e) {
       e.preventDefault();
-      // if (!e.target.productName.value) {
-      //      alert("Please fill out all the fields before you submit");
-      // } else {
+
       axios
       .post(`http://localhost:3001/ingredient/${e.target.ingName.value}`, {
         "userId": "Randall",
@@ -73,16 +71,24 @@ class FoodStorage extends React.Component {
         return (
             <section className="food-storage">
                 <NewIngredient addIngredient={this.addIngredient} />
-                {/* For each category, filter our ingredients list and pass as prop to that category's food list */}
-                {this.categories.map(category => {
-                  return ( <FoodCategory
-                    category={category}
-                    ingredients={this.state.ingredients
-                      .filter(ingredient => ingredient.category === category)}
-                  />)
-                  
-                })}
-                
+                {console.log(this.props.details)}
+                {/* Do we display simple details or all details of the ingredients? */}
+                  {/* For each category, filter our ingredients list and pass as prop to that category's food list */}
+                {this.props.details ?
+                  (this.categories.map(category => {
+                    
+                    return ( <FoodCategory
+                      category={category}
+                      ingredients={this.state.ingredients
+                        .filter(ingredient => ingredient.category === category)}
+                    />)
+                    
+                  })) : (this.state.ingredients) ? 
+                    this.state.ingredients.map( ingredient => {
+                      return ( <Ingredient data={ingredient} details={false} />)
+                    }) : "" }
+                  }
+
             </section>
         )
     }

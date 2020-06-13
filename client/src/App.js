@@ -26,7 +26,8 @@ function App() {
             <Redirect to="/recipes" />
           </Route>
           <Route path="/recipes" component={RecipeList} />
-          <Route path="/groceries" component={FoodStorage} />
+          <Route path="/groceries" 
+            render={(props) => <FoodStorage {...props} details={true} />} />
           <Route path="/meals" component={MealPlan} />
           <Route path="/goals" component={Goals} />
         </Switch>

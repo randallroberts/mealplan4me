@@ -7,10 +7,8 @@ import './NewIngredient.scss';
 class NewIngredient extends React.Component {
     constructor () {
       super();
-      this.state = {
-        //showModal: false
-      };
     }
+    
     defaultCats = [
       { label: "Produce", value: "Produce" },
       { label: "Dairy", value: "Dairy" },
