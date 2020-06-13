@@ -16,7 +16,6 @@ class RecipeList extends React.Component {
     getIngredients() {
       axios.get("http://localhost:3001/ingredients/Randall")
       .then (response => {
-        console.log(response.data)
         this.setState({
           ingredients: response.data
         })
@@ -29,29 +28,46 @@ class RecipeList extends React.Component {
     //Get Recipes based on ingredients selected (use + to separate ingredients passed in GET request)
     getRecipes() {
 
-      //default: chicken+rice+pasta+vegetables
-      //if isSelected, query those instead
-      let selectedIngredients = this.state.ingredients.filter(ingr => ingr.isSelected);
-      console.log("SelIngr:", selectedIngredients);
-      console.log("Query:", selectedIngredients.map(ingr => ingr + '+'))
-      selectedIngredients = (selectedIngredients.length > 0) ? selectedIngredients.map(ingr => ingr + '+') : `chicken+rice+pasta+vegetables`;
+      let selectedIngredients = "";
 
-      axios.get("http://localhost:3001/ingredients/" + selectedIngredients)
+      //default: chicken+rice+pasta+vegetables
+      if (!this.state.ingredients) {
+        selectedIngredients = "chicken+rice+pasta+vegetables";
+      //if isSelected, query those instead
+      } else {
+        selectedIngredients = this.state.ingredients.filter(ingr => ingr.liked);
+      }
+
+      console.log("SelIngr:"+selectedIngredients);
+      
+      //console.log("Query:", selectedIngredients.map(ingr => ingr + '+'))
+      // selectedIngredients = (selectedIngredients.length > 0) ? selectedIngredients.map(ingr => ingr + '+') : `chicken+rice+pasta+vegetables`;
+
+      axios.get("http://localhost:3001/recipes/" + selectedIngredients)
       .then (response => {
-        console.log(response.data)
         this.setState({
-          ingredients: response.data
+          //ingredients: newIngrListWithSelection
+          recipes: response.data.hits.map(hit => hit.recipe )
         })
+
       })
       .catch(error => {
         console.error(error);
       });
     }
 
-    //Select ingredients (re-use code from selecting recipes)
-      //add "isSelected" to MongoDB schema?
-      //SetState with new Recipe axios call as ingredients selected
+    componentDidMount() {
+      this.getRecipes();
+    }
 
+    // Event handler passed to ingredients: 
+      //when an ingredient is selected
+        //this.getRecipes() with new ingredient added to query list
+        //setState to update that ingredient being liked. This will fire onUpdate/render
+
+          
+
+    
     render () {
         return (
           <>
@@ -60,8 +76,11 @@ class RecipeList extends React.Component {
             
             {/* Display map of Recipe components based on results */}
             <section className="recipe-list">
-              <Recipe isSelected={false} />
-              <Recipe isSelected={true} />
+              {
+                this.state.recipes ? this.state.recipes.map(recipe => {
+                  return <Recipe isSelected={false} data={recipe}/>
+                }) : ""
+              }
             </section>
           </>
         )

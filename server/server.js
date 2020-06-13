@@ -20,7 +20,7 @@ app.use(cors());
 db.on('error', console.error.bind(console, 'MongoDB connection error:'))
 
 /**
- * GET /recipes
+ * GET /recipes/chicken+rice+pasta+vegetables
  * 
  * [
         {
@@ -739,10 +739,10 @@ app.get("/recipes/:ingredients", (req, res) => {
 
     //Connect to Edamam Recipe Search API
     try{
-        axios.get(`${recipeURL}?q=${req.params.ingredients}&app_id=${recipeAppId}&app_key=${recipeAppKey}`)
+        axios.get(`${recipeURL}?q=${req.params.ingredients}&app_id=${recipeAppId}&app_key=${recipeAppKey}&from=0&to=100`)
         .then(response => {
-            console.log("Edamam returned:" + JSON.stringify(response.data));
             res.json(response.data);
+            console.log("Edamam recipes:" + JSON.stringify(response.data));
         })
         .catch(err => {
             console.log("Failed to get recipe data: ", err)
@@ -750,7 +750,7 @@ app.get("/recipes/:ingredients", (req, res) => {
         });
     }
     catch(err){
-        console.error("Couldn't connect to Edamam", err);
+        console.error("Couldn't connect to Edamam Recipe Suggestions: ", err);
     }
 });
 
@@ -785,7 +785,7 @@ app.get("/ingredients/:userId", (req, res) => {
     // Use Mongoose to get all ingredients
     Ingredient.find({ owner: req.params.userId})
         .then(function(dbIngredients) {
-            console.log("All Ingredients:", dbIngredients);
+            //console.log("All Ingredients:", dbIngredients);
             res.json(dbIngredients);
         })
         .catch(function(err) {

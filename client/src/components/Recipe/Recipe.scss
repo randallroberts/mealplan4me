@@ -24,6 +24,7 @@
     &__title {
         width: 100%;
         padding: $padding-std;
+        text-transform: capitalize;
     }
 
     &__divider {
@@ -42,5 +43,16 @@
 
     &__ingredients {
         padding: $padding-std;
+
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+
+        /* For inferior browsers */
+        line-height: 1rem;
+        max-height: 2rem;
     }
 }

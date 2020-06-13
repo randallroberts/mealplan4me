@@ -22,15 +22,15 @@ class Recipe extends React.Component {
             onClick={this.toggleSelection.bind(this)}
             >
             <h3 className="recipe__title">
-              Recipe Title
+              {this.props.data.label}
             </h3>
             <hr className="recipe__divider" />
             <div className="recipe__body">
-              <img className="recipe__img" src={tempImg} alt="Recipe Title" />
+              <img className="recipe__img" src={this.props.data.image} alt={this.props.data.label} />
             </div>
             <hr className="recipe__divider" />
             <div className="recipe__ingredients">
-              Recipe ing1, recipe ing2...
+              {this.props.data.ingredientLines}
             </div>
           </div>
         )
