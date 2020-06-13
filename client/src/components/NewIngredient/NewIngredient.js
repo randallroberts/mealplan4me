@@ -5,9 +5,6 @@ import './NewIngredient.scss';
 // import AddImg from "../../assets/icons/uploadImg.svg"
 
 class NewIngredient extends React.Component {
-    constructor () {
-      super();
-    }
     
     defaultCats = [
       { label: "Produce", value: "Produce" },

@@ -12,8 +12,8 @@ class FoodCategory extends React.Component {
               </h3>
               <hr className="food-category__divider" />
               <div className="food-category__details">
-                {this.props.ingredients.map(ingr => {
-                  return <Ingredient data={ingr} />
+                {this.props.ingredients.map((ingr, key) => {
+                  return <Ingredient key={key} data={ingr} />
                 })}
               </div>
           </section>

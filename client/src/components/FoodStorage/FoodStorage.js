@@ -69,27 +69,30 @@ class FoodStorage extends React.Component {
 
     render () {
         return (
+          <>
+            <aside className="ingredient-list">
+              {((this.state.ingredients) && (!this.props.details)) ? 
+                  this.state.ingredients.map( (ingredient, key) => {
+                    return ( <Ingredient key={key} data={ingredient} details={false} />)
+                  }) : "" }
+              <NewIngredient addIngredient={this.addIngredient} />
+            </aside>
             <section className="food-storage">
-                <NewIngredient addIngredient={this.addIngredient} />
-                {console.log(this.props.details)}
-                {/* Do we display simple details or all details of the ingredients? */}
-                  {/* For each category, filter our ingredients list and pass as prop to that category's food list */}
-                {this.props.details ?
-                  (this.categories.map(category => {
-                    
-                    return ( <FoodCategory
-                      category={category}
-                      ingredients={this.state.ingredients
-                        .filter(ingredient => ingredient.category === category)}
-                    />)
-                    
-                  })) : (this.state.ingredients) ? 
-                    this.state.ingredients.map( ingredient => {
-                      return ( <Ingredient data={ingredient} details={false} />)
-                    }) : "" }
-                  }
-
+              
+              {/* Do we display simple details or all details of the ingredients? */}
+              {this.props.details ?
+                (this.categories.map((category, key) => {
+                  return ( <FoodCategory
+                    key={key}
+                    category={category}
+                    ingredients={this.state.ingredients
+                      .filter(ingredient => ingredient.category === category)}
+                  />)
+                  
+                })) : ""
+              }
             </section>
+          </>
         )
     }
 }

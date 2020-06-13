@@ -47,8 +47,6 @@ class RecipeList extends React.Component {
         console.error(error);
       });
     }
-      
-    
 
     //Select ingredients (re-use code from selecting recipes)
       //add "isSelected" to MongoDB schema?
@@ -59,6 +57,7 @@ class RecipeList extends React.Component {
           <>
             {/* Display simple version of ingredients list */}
             <FoodStorage details={false} />
+            
             {/* Display map of Recipe components based on results */}
             <section className="recipe-list">
               <Recipe isSelected={false} />
