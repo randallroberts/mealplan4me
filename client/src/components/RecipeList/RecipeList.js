@@ -10,6 +10,8 @@ class RecipeList extends React.Component {
       this.state = {
         ingredients: this.getIngredients()
       };
+
+      this.selectedIngredients = [];
     }
 
     //Get all ingredients 
@@ -26,30 +28,19 @@ class RecipeList extends React.Component {
     }
       
     //Get Recipes based on ingredients selected (use + to separate ingredients passed in GET request)
-    getRecipes() {
-
-      let selectedIngredients = "";
-
+    getRecipes($ingrs) {
+      let ingrQuery = "chicken+rice+pasta+vegetables";
       //default: chicken+rice+pasta+vegetables
-      if (!this.state.ingredients) {
-        selectedIngredients = "chicken+rice+pasta+vegetables";
-      //if isSelected, query those instead
-      } else {
-        selectedIngredients = this.state.ingredients.filter(ingr => ingr.liked);
+      if (this.selectedIngredients.length > 0) {
+        ingrQuery = this.selectedIngredients;
       }
 
-      console.log("SelIngr:"+selectedIngredients);
-      
-      //console.log("Query:", selectedIngredients.map(ingr => ingr + '+'))
-      // selectedIngredients = (selectedIngredients.length > 0) ? selectedIngredients.map(ingr => ingr + '+') : `chicken+rice+pasta+vegetables`;
-
-      axios.get("http://localhost:3001/recipes/" + selectedIngredients)
+      axios.get("http://localhost:3001/recipes/" + ingrQuery)
       .then (response => {
         this.setState({
           //ingredients: newIngrListWithSelection
           recipes: response.data.hits.map(hit => hit.recipe )
-        })
-
+        });
       })
       .catch(error => {
         console.error(error);
@@ -57,28 +48,37 @@ class RecipeList extends React.Component {
     }
 
     componentDidMount() {
-      this.getRecipes();
+      this.getRecipes("chicken+rice+pasta+vegetables");
     }
 
     // Event handler passed to ingredients: 
-      //when an ingredient is selected
-        //this.getRecipes() with new ingredient added to query list
-        //setState to update that ingredient being liked. This will fire onUpdate/render
-
-          
-
+    suggestIngredient(likedIngr, addRem) {
+      //when an ingredient is selected/deselected, add/remove it to the recipe suggestions
+      if (addRem) {
+        this.selectedIngredients.push(likedIngr);
+      } else {
+        this.selectedIngredients.splice(this.selectedIngredients.indexOf(likedIngr),1);
+      }
+      
+      this.getRecipes(this.selectedIngredients);
+      //setState to update that ingredient being liked. This will fire onUpdate/render
+    }
     
     render () {
         return (
           <>
             {/* Display simple version of ingredients list */}
-            <FoodStorage details={false} />
+            <FoodStorage details={false} suggestIngredient={this.suggestIngredient.bind(this)} />
             
             {/* Display map of Recipe components based on results */}
             <section className="recipe-list">
               {
-                this.state.recipes ? this.state.recipes.map(recipe => {
-                  return <Recipe isSelected={false} data={recipe}/>
+                this.state.recipes ? this.state.recipes.map((recipe, key) => {
+                  return <Recipe
+                    key={key}
+                    isSelected={false}
+                    data={recipe}
+                  />
                 }) : ""
               }
             </section>

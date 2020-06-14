@@ -15,6 +15,8 @@ class Ingredient extends React.Component {
 
     toggleSelection (e) {
       e.preventDefault();
+      //De-select ingredient
+      this.props.suggestIngredient(e.target.innerHTML, !this.state.isSelected);
       this.setState({ isSelected: !this.state.isSelected });
     }
 
@@ -26,10 +28,11 @@ class Ingredient extends React.Component {
     render () {
         return (
           <>
-            <div className={this.state.isSelected ? "ingredient ingredient--selected" : "ingredient"}
-              onClick={ this.props.showDetails ? this.toggleDetails.bind(this) : this.toggleSelection.bind(this)} >
+            <div className={this.state.isSelected ? "ingredient ingredient--selected" : "ingredient"} >
               <div className="ingredient__overview">
-                <p>{this.props.data.name}</p>
+                <p name="ingr" onClick={ this.props.showDetails ? this.toggleDetails.bind(this) : this.toggleSelection.bind(this)}>
+                  {this.props.data.name}
+                </p>
                 <img
                   className="ingredient__info-icon"
                   src={infoIcon}

@@ -75,7 +75,12 @@ class FoodStorage extends React.Component {
               {/* If we're displaying simple details */}
               {((this.state.ingredients) && (!this.props.details)) ? 
                   this.state.ingredients.map( (ingredient, key) => {
-                    return ( <Ingredient key={key} data={ingredient} showDetails={false} />)
+                    return ( <Ingredient 
+                      key={key}
+                      data={ingredient}
+                      showDetails={false}
+                      suggestIngredient={this.props.suggestIngredient}
+                    />)
                   }) : "" }
               
             </aside>

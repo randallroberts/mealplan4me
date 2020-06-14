@@ -1,6 +1,5 @@
 import React from 'react';
 import './Recipe.scss';
-import tempImg from "../../assets/images/mealPlanLogo.PNG";
 
 class Recipe extends React.Component {
     constructor () {
