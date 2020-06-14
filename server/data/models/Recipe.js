@@ -37,17 +37,17 @@ const RecipeSchema = new Schema({
         type: String,
         required: true
     },
-    recipeReadable: [
-        {   
-            text: String
-        }
-    ],
-    recipeRaw: [
-        {   
-            text: String,
-            weight: Number
-        }
-    ]
+    recipeReadable: {   
+        text: String,
+        required: false
+    }
+    // ],
+    // recipeRaw: [
+    //     {   
+    //         text: String,
+    //         weight: Number
+    //     }
+    // ]
 });
 
 // Export the Schema

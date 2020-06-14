@@ -12,6 +12,7 @@ class RecipeList extends React.Component {
       };
 
       this.selectedIngredients = [];
+      this.selectedRecipes = [];
     }
 
     //Get all ingredients 
@@ -28,18 +29,39 @@ class RecipeList extends React.Component {
     }
       
     //Get Recipes based on ingredients selected (use + to separate ingredients passed in GET request)
-    getRecipes($ingrs) {
-      let ingrQuery = "chicken+rice+pasta+vegetables";
-      //default: chicken+rice+pasta+vegetables
+    getRecipes() {
+      let ingrQuery = ""; //Empty string will retrieve all selected Recipes from database
       if (this.selectedIngredients.length > 0) {
         ingrQuery = this.selectedIngredients;
       }
 
       axios.get("http://localhost:3001/recipes/" + ingrQuery)
       .then (response => {
+        //if query is empty, get favourite'd meals from MongoDB
+        if (ingrQuery === "") {
+          this.selectedRecipes = response.data;
+          this.setState({
+            //ingredients: newIngrListWithSelection
+            recipes: response.data
+          });
+        }
+
+        //when user selects ingredients, query Edamam for new recipe suggestions
         this.setState({
           //ingredients: newIngrListWithSelection
-          recipes: response.data.hits.map(hit => hit.recipe )
+          recipes: response.data.hits.map(hit => { return ({
+            "title": hit.recipe.label,
+            "nutrition": {
+              "calories": hit.recipe.calories,
+              "fats": hit.recipe.totalNutrients.FAT.quantity,
+              "carbs": hit.recipe.totalNutrients.CHOCDF.quantity,
+              "protein": hit.recipe.totalNutrients.PROCNT.quantity
+            },
+            "servings": hit.recipe.yield,
+            "url": hit.recipe.shareAs,
+            "image": hit.recipe.image,
+            "recipeReadable": hit.recipe.ingredientLines
+          })} )
         });
       })
       .catch(error => {
@@ -48,7 +70,7 @@ class RecipeList extends React.Component {
     }
 
     componentDidMount() {
-      this.getRecipes("chicken+rice+pasta+vegetables");
+      this.getRecipes();
     }
 
     // Event handler passed to ingredients: 
@@ -65,6 +87,8 @@ class RecipeList extends React.Component {
     }
     
     render () {
+      // console.log(this.selectedIngredients);
+      console.log(this.state.recipes)
         return (
           <>
             {/* Display simple version of ingredients list */}
