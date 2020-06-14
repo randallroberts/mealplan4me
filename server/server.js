@@ -158,6 +158,29 @@ app.post('/recipe/', (req, res) => {
     });
 });
 
+/*
+* DELETE /recipe/:id
+*
+* Response: ???
+*/
+
+app.delete('/recipe/:id', function (req, res) {
+
+    //If there's no id provided, return a 400 error
+    if (!req.params.id) {
+        res.status(400).json({error: 'id not found in DELETE parameters'});
+        return;
+    }
+    
+    Recipe.findByIdAndDelete(req.params.id, (err) => {
+        err ? console.error(err) : console.log("Removed Recipe from Saved Recipes");
+    });
+    
+    //Send back the remaining inventory list
+    res.status(200).json('Successfully removed Recipe from Saved Recipes');
+
+});
+
 /**
  * GET /recipes/chicken+rice+pasta+vegetables
  * 

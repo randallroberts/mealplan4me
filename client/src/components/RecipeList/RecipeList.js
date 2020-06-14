@@ -12,7 +12,7 @@ class RecipeList extends React.Component {
       };
 
       this.selectedIngredients = [];
-      this.selectedRecipes = [];
+      // this.selectedRecipes = [];
     }
 
     //Get all ingredients 
@@ -30,25 +30,26 @@ class RecipeList extends React.Component {
       
     //Get Recipes based on ingredients selected (use + to separate ingredients passed in GET request)
     getRecipes() {
-      let ingrQuery = ""; //Empty string will retrieve all selected Recipes from database
+      //Empty string will retrieve all saved Recipes from database
+      let ingrQuery = ""; 
+      //If the user has selected ingredients, query Edamam instead of pulling saved Recipes
       if (this.selectedIngredients.length > 0) {
         ingrQuery = this.selectedIngredients;
       }
 
+      //Get recipes from MongoDB or Edamam (depends on query)
       axios.get("http://localhost:3001/recipes/" + ingrQuery)
       .then (response => {
         //if query is empty, get favourite'd meals from MongoDB
         if (ingrQuery === "") {
           this.selectedRecipes = response.data;
           this.setState({
-            //ingredients: newIngrListWithSelection
             recipes: response.data
           });
         }
 
         //when user selects ingredients, query Edamam for new recipe suggestions
         this.setState({
-          //ingredients: newIngrListWithSelection
           recipes: response.data.hits.map(hit => { return ({
             "title": hit.recipe.label,
             "nutrition": {
@@ -83,12 +84,9 @@ class RecipeList extends React.Component {
       }
       
       this.getRecipes(this.selectedIngredients);
-      //setState to update that ingredient being liked. This will fire onUpdate/render
     }
     
     render () {
-      // console.log(this.selectedIngredients);
-      console.log(this.state.recipes)
         return (
           <>
             {/* Display simple version of ingredients list */}
@@ -98,9 +96,10 @@ class RecipeList extends React.Component {
             <section className="recipe-list">
               {
                 this.state.recipes ? this.state.recipes.map((recipe, key) => {
+                  console.log(recipe);
                   return <Recipe
                     key={key}
-                    isSelected={false}
+                    isSelected={recipe._id !== undefined ? true : false}
                     data={recipe}
                   />
                 }) : ""

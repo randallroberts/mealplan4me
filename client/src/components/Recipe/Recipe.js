@@ -29,32 +29,19 @@ class Recipe extends React.Component {
             "url": e.target.url.value,
             "image": e.target.image.value,
             "recipeReadable": e.target.recipeReadable.value
-            // "recipeRaw": [
-            //     {
-            //         "_id": "5ee67efa6bf22f141840202e",
-            //         "text": "sugar",
-            //         "weight": 5
-            //     },
-            //     {
-            //         "_id": "5ee67efa6bf22f141840202f",
-            //         "text": "salt",
-            //         "weight": 12
-            //     }
-            // ],
-            // "__v": 0
         });
+      //If we're de-selecting a recipe, remove it from MongoDB
       } else {
         console.log("Delete recipe from MongoDB");
-        //request = axios.delete()
+        request = axios.delete(`http://localhost:3001/recipe/${this.props.data._id}`, )
       }
 
       if (request) {
-
         request.then(response => {
           console.log("Recipe POST/DELETE successful:", response.data);
           this.setState({ 
-            isSelected: !this.state.isSelected,
-            recipeId: response.data._id
+            recipeId: response.data._id || null,
+            isSelected: !this.state.isSelected
           });
         })
         .catch(error => {
@@ -63,10 +50,17 @@ class Recipe extends React.Component {
       }
     }
 
+    componentDidMount () {
+      this.setState({
+        isSelected: this.props.isSelected
+      })
+    }
+
     render () {
         return (
           
           <form name="recipeForm"
+            id={this.props.data._id ? this.props.data._id : null}
             className={this.state.isSelected ? "recipe recipe--selected" : "recipe"}
             onSubmit={this.toggleSelection.bind(this)}>
             <button
@@ -76,7 +70,10 @@ class Recipe extends React.Component {
               </h3>
               {/* <hr className="recipe__divider" /> */}
               <div className="recipe__body">
-                <img className="recipe__img" src={this.props.data.image} alt={this.props.data.title} />
+                <img className="recipe__img"
+                  src={this.props.data.image}
+                  alt={this.props.data.title}
+                />
               </div>
               {/* <hr className="recipe__divider" /> */}
               <div className="recipe__ingredients">
