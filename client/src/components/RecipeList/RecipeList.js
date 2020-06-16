@@ -31,7 +31,7 @@ class RecipeList extends React.Component {
     //Get Recipes based on ingredients selected (use + to separate ingredients passed in GET request)
     getRecipes() {
       //Empty string will retrieve all saved Recipes from database
-      let ingrQuery = ""; 
+      let ingrQuery = "";
       //If the user has selected ingredients, query Edamam instead of pulling saved Recipes
       if (this.selectedIngredients.length > 0) {
         ingrQuery = this.selectedIngredients;
@@ -46,24 +46,24 @@ class RecipeList extends React.Component {
           this.setState({
             recipes: response.data
           });
+        } else {
+          //if we got the recipe from Edamam, re-form to match MongoDB structure
+          this.setState({
+            recipes: response.data.hits.map(hit => { return ({
+              "title": hit.recipe.label,
+              "nutrition": {
+                "calories": hit.recipe.calories,
+                "fats": hit.recipe.totalNutrients.FAT.quantity,
+                "carbs": hit.recipe.totalNutrients.CHOCDF.quantity,
+                "protein": hit.recipe.totalNutrients.PROCNT.quantity
+              },
+              "servings": hit.recipe.yield,
+              "url": hit.recipe.shareAs,
+              "image": hit.recipe.image,
+              "recipeReadable": hit.recipe.ingredientLines
+            })} )
+          });
         }
-
-        //when user selects ingredients, query Edamam for new recipe suggestions
-        this.setState({
-          recipes: response.data.hits.map(hit => { return ({
-            "title": hit.recipe.label,
-            "nutrition": {
-              "calories": hit.recipe.calories,
-              "fats": hit.recipe.totalNutrients.FAT.quantity,
-              "carbs": hit.recipe.totalNutrients.CHOCDF.quantity,
-              "protein": hit.recipe.totalNutrients.PROCNT.quantity
-            },
-            "servings": hit.recipe.yield,
-            "url": hit.recipe.shareAs,
-            "image": hit.recipe.image,
-            "recipeReadable": hit.recipe.ingredientLines
-          })} )
-        });
       })
       .catch(error => {
         console.error(error);
@@ -96,7 +96,6 @@ class RecipeList extends React.Component {
             <section className="recipe-list">
               {
                 this.state.recipes ? this.state.recipes.map((recipe, key) => {
-                  console.log(recipe);
                   return <Recipe
                     key={key}
                     isSelected={recipe._id !== undefined ? true : false}
