@@ -7,6 +7,11 @@ const RecipeSchema = new Schema({
         type: String,
         required: true
     },
+    category: {
+        type: String,
+        required: true,
+        default: "Any"
+    },
     nutrition: {
         calories: {
             type: Number,

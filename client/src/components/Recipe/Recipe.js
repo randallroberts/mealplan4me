@@ -1,6 +1,7 @@
 import React from 'react';
-import './Recipe.scss';
+import Select from 'react-select';
 import axios from 'axios';
+import './Recipe.scss';
 
 class Recipe extends React.Component {
     constructor () {
@@ -8,6 +9,14 @@ class Recipe extends React.Component {
       this.state = {
         isSelected: false
       };
+
+      this.meals = [
+        { value: "Any", label: "Any" },
+        { value: "Breakfast", label: "Breakfast" },
+        { value: "Lunch", label: "Lunch" },
+        { value: "Dinner", label: "Dinner" },
+        { value: "Snacks", label: "Snacks" }
+      ];
     }
 
     toggleSelection (e) {
@@ -19,6 +28,7 @@ class Recipe extends React.Component {
         request = axios
         .post("http://localhost:3001/recipe/", {
             "title": e.target.title.value,
+            //"category": e.target.category.value,
             "nutrition": {
                 "calories": e.target.calories.value,
                 "fats": e.target.fats.value,
@@ -63,8 +73,7 @@ class Recipe extends React.Component {
             id={this.props.data._id ? this.props.data._id : null}
             className={this.state.isSelected ? "recipe recipe--selected" : "recipe"}
             onSubmit={this.toggleSelection.bind(this)}>
-            <button
-              className="recipe__button">
+            <button className="recipe__button">
               <h3 className="recipe__title">
                 {this.props.data.title}
               </h3>
@@ -73,8 +82,16 @@ class Recipe extends React.Component {
                 <img className="recipe__img"
                   src={this.props.data.image}
                   alt={this.props.data.title}
-                />
+              />
               </div>
+              </button>
+              <Select
+                className="recipe__select"
+                name="recipeCategory"
+                options={this.meals}
+                defaultOptions={this.meals}
+                defaultValue={this.meals.filter(option => option.label === 'Any')}
+              />
               {/* <hr className="recipe__divider" /> */}
               <div className="recipe__ingredients">
                 {this.props.data.url}
@@ -119,7 +136,7 @@ class Recipe extends React.Component {
                 type="hidden"
                 value={this.props.data.ingredients}
               /> */}
-            </button>
+            
           </form>
         )
     }

@@ -2,37 +2,77 @@ import React from 'react';
 import Scheduler from 'devextreme-react/scheduler';
 import 'devextreme/dist/css/dx.common.css';
 import 'devextreme/dist/css/dx.light.css';
-
-import { data } from './data.js';
+import axios from 'axios';
 import './MealPlan.scss';
 
-const currentDate = new Date(2017, 4, 11);
+const currentDate = Date.now();
 const views = ['agenda'];
 
 class MealPlan extends React.Component {
+  constructor () {
+    super();
+    this.state = {
+      details: false,
+      isSelected: false,
+      recipes: []
+    };
+
+    this.meals = [
+      {
+        text: 'Breakfast',
+        startDate: new Date(2020, 5, 16, 7, 0),
+        endDate: new Date(2020, 5, 16, 9, 30)
+      },
+      {
+        text: 'Lunch',
+        startDate: new Date(2020, 5, 16, 11, 0),
+        endDate: new Date(2020, 5, 16, 13, 30)
+      },
+      {
+        text: 'Dinner',
+        startDate: new Date(2020, 5, 16, 16, 0),
+        endDate: new Date(2020, 5, 16, 20, 0)
+      },
+      {
+        text: 'Snacks',
+        startDate: new Date(2020, 5, 16, 20, 30),
+        endDate: new Date(2020, 5, 16, 22, 30)
+      }
+    ];
+  }
+  
+  //Get Meals the user has selected before
+  getMeals() {
+    axios.get("http://localhost:3001/recipes/")
+    .then (response => {
+    
+
+
+
+      //Save the end result to state, causing the re-render
+      this.setState({
+        recipes: response.data
+      });
+    })
+    .catch(error => {
+      console.error(error);
+    });
+  }
 
   onAppointmentClick (e) {
     console.log(e.appointmentData);
-    /* {
-        startDate: new Date(2016, 6, 18, 8), 
-        endDate: new Date(2016, 6, 18, 9),
-        ownerId: [1, 2],
-        recurrenceRule: "FREQ=DAILY"
-    } */
- 
+
     console.log(e.targetedAppointmentData);
-    /* {
-        startDate: new Date(2016, 6, 19, 8), 
-        endDate: new Date(2016, 6, 19, 9),
-        ownerId: 2,
-        recurrenceRule: "FREQ=DAILY"
-    } */
-}
+  }
+
+  componentDidMount () {
+    this.getMeals();
+  }
 
   render() {
     return (
       <Scheduler
-        dataSource={data}
+        dataSource={this.meals}
         views={views}
         currentView="agenda"
         defaultCurrentDate={currentDate}

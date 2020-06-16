@@ -49,6 +49,11 @@
         object-fit: cover;
     }
 
+    &__select {
+        margin-bottom: 8px;
+        width: 100%;
+    }
+
     &__ingredients {
         padding: $padding-std;
 

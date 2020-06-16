@@ -47,7 +47,7 @@ class RecipeList extends React.Component {
             recipes: response.data
           });
         } else {
-          //if we got the recipe from Edamam, re-form to match MongoDB structure
+          //if we got the recipe from Edamam, re-shape to match MongoDB structure
           this.setState({
             recipes: response.data.hits.map(hit => { return ({
               "title": hit.recipe.label,

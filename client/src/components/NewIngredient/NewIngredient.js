@@ -34,7 +34,7 @@ class NewIngredient extends React.Component {
       );
     };
 
-    searchStores = inputValue =>
+    searchCats = inputValue =>
       new Promise(resolve => {
         setTimeout(() => {
           resolve(this.filterCats(inputValue));
