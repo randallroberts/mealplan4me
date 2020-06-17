@@ -12,47 +12,46 @@ class MealPlan extends React.Component {
   constructor () {
     super();
     this.state = {
-      details: false,
-      isSelected: false,
-      recipes: []
+      recipes: [],
+
     };
 
     this.meals = [
       {
         text: 'Breakfast',
-        startDate: new Date(2020, 5, 16, 7, 0),
-        endDate: new Date(2020, 5, 16, 9, 30)
+        startDate: new Date(2020, 5, 17, 7, 0),
+        endDate: new Date(2020, 5, 17, 9, 30)
       },
       {
         text: 'Lunch',
-        startDate: new Date(2020, 5, 16, 11, 0),
-        endDate: new Date(2020, 5, 16, 13, 30)
+        startDate: new Date(2020, 5, 17, 11, 0),
+        endDate: new Date(2020, 5, 17, 13, 30)
       },
       {
         text: 'Dinner',
-        startDate: new Date(2020, 5, 16, 16, 0),
-        endDate: new Date(2020, 5, 16, 20, 0)
+        startDate: new Date(2020, 5, 17, 16, 0),
+        endDate: new Date(2020, 5, 17, 20, 0)
       },
       {
         text: 'Snacks',
-        startDate: new Date(2020, 5, 16, 20, 30),
-        endDate: new Date(2020, 5, 16, 22, 30)
+        startDate: new Date(2020, 5, 17, 20, 30),
+        endDate: new Date(2020, 5, 17, 22, 30)
       }
     ];
   }
   
   //Get Meals the user has selected before
   getMeals() {
-    axios.get("http://localhost:3001/recipes/")
+    axios.get("http://localhost:3001/meals/")
     .then (response => {
-    
 
-
-
-      //Save the end result to state, causing the re-render
+      //Re-shape the response.data to match the Scheduler's needs
+      
       this.setState({
-        recipes: response.data
+        meals: response.data
       });
+
+      //chain a then, saving the new dates and categories to MongoDb
     })
     .catch(error => {
       console.error(error);

@@ -9,16 +9,85 @@ const axios = require("axios");
 const db = require('./data/db');
 const Ingredient = require("./data/models/Ingredient");
 const Recipe = require("./data/models/Recipe");
+const Mealplan = require("./data/models/Mealplan");
 const app = express();
 app.use(express.json());
 require('dotenv').config();
 const apiPort = process.env.LOCAL_API_PORT;
 
-// app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
-// app.use(bodyParser.json());
 
 db.on('error', console.error.bind(console, 'MongoDB connection error:'))
+
+/**
+ * GET meals/
+ * 
+ * Assigns all recipes to a scheduled mealplan, and then returns the scheduled layout
+ * TBC: by username
+ */
+
+app.get("/meals/", (req, res) => {
+    //backend will pull all saved recipes
+    let p1 = Mealplan.find();
+    let p2 = Recipe.find();
+
+    Promise.all([p2, p1])
+    .then(response => {
+
+    let meals = response[1];
+    let recipes = response[0];
+            
+    //for the next two weeks, create mealplans
+    let now = new Date();
+    let twoWeeks = new Date();
+    twoWeeks.setDate(now.getDate() + 14);
+
+    let daysOfYear = []; //don't care about this
+
+    //For the next 14 days, assign saved recipes to mealplan
+    for (let d = new Date(); d <= twoWeeks; d.setDate(d.getDate() + 1)) {
+        
+        let newMealplan = {
+            mealplanDate : d,
+            meals: {}
+        };
+        
+        //if the mealplan array doesn't have an object for that day, create it
+        if (meals.filter(meal => meal.mealplanDate.toDateString() === d.toDateString()).length > 0) {
+            console.log("Loading mealplan for", d.toDateString());
+            newMealplan = meals.filter(meal => meal.mealplanDate.toDateString());
+        }
+
+        //for each meal category in that day's mealplan object
+        mealCats = ["breakfast", "lunch", "dinner", "snacks"];
+        mealCats.forEach (cat => {
+            let unassignedRecipes = recipes.filter(recipe => !recipe.dateToMake);
+            // if the meal category doesn't exist in the day's meal plan
+            if (!newMealplan.meals[cat] && unassignedRecipes.length > 0) {
+                
+                //assign it a random recipe from response.data.filter(recipe => !recipe.dateToMake)
+                // console.log("Remaining recipes:", unassignedRecipes);
+                let index = Math.floor(Math.random() * unassignedRecipes.length);
+                //Mark the recipe as being made today
+                unassignedRecipes[index].dateToMake = d;
+                newMealplan.meals[cat] = unassignedRecipes[index];
+            }
+        })
+
+        console.log(newMealplan);
+        // meals.push(); //change this to adding a new Mealplan object
+    }
+        
+        res.json(recipes);
+        
+        console.log(meals);
+    })
+    .catch(function(err) {
+        console.log(err);
+        res.json(err);
+    });
+
+});
 
 /**
  * GET recipes/
@@ -118,17 +187,6 @@ app.get("/recipe/:id", (req, res) => {
  */
 
 app.post('/recipe/', (req, res) => {
-    
-    // console.log(req.params);
-
-    // if(!req.body.userId) {
-    //     console.error("Missing User ID in Body");
-    //     res.status(400).send("Missing User ID in Body");
-    //     return;
-    // }
-
-    // console.log("I am here: ************", req.body, "***************");
-
     //Store result in MongoDB
     const newRecipe = new Recipe({
         title: req.body.title,

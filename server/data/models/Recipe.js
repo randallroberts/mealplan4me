@@ -12,6 +12,10 @@ const RecipeSchema = new Schema({
         required: true,
         default: "Any"
     },
+    dateToMake: {
+        type: Date,
+        required: false
+    },
     nutrition: {
         calories: {
             type: Number,
