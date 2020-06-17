@@ -53,7 +53,6 @@ class Recipe extends React.Component {
             recipeId: response.data._id || null,
             isSelected: !this.state.isSelected
           });
-          console.log("Follow up: ", this.state);
         })
         .catch(error => {
           console.error(error);
@@ -61,37 +60,13 @@ class Recipe extends React.Component {
       }
     }
 
-    // static getDerivedStateFromProps(props, state) {
-    //   console.log("Props is:", props, "and state is: ", state)
-    //   if (props.data.isSelected !== state.isSelected) {
-    //     return {
-    //       isSelected: props.data.isSelected,
-    //     };
-    //   }
-    // }
-  
-    componentDidUpdate(prevProps, prevState) {
+    componentDidUpdate(prevProps) {
       if (prevProps.data.isSelected !== this.props.data.isSelected) {
         this.setState({
           isSelected: this.props.data.isSelected
         })
       }
     }
-        // // if the page just loaded, we display saved recipes.
-        //   props.isSelected = true
-
-        //   OnMount: state.isSelected = props.isSelected
-        // //if we query Edamam
-        //   props.isSelected = false
-        //   state.isSelected = true
-        //   mount: n/a
-
-
-
-    //   if (this.props.data.isSelected !== prevProps.data.isSelected) {
-    //     
-    //   }
-    // }
     
     componentDidMount () {
       this.setState({
