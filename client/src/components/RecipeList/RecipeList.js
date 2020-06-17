@@ -8,7 +8,8 @@ class RecipeList extends React.Component {
     constructor () {
       super();
       this.state = {
-        ingredients: this.getIngredients()
+        ingredients: [],
+        recipes: []
       };
 
       this.selectedIngredients = [];
@@ -44,24 +45,31 @@ class RecipeList extends React.Component {
         if (ingrQuery === "") {
           this.selectedRecipes = response.data;
           this.setState({
-            recipes: response.data
+              recipes: response.data.map(recipe => {
+              recipe.isSelected = true;
+              recipe.updateChild = true;
+              return recipe;
+            })
           });
         } else {
           //if we got the recipe from Edamam, re-shape to match MongoDB structure
           this.setState({
             recipes: response.data.hits.map(hit => { return ({
-              "title": hit.recipe.label,
-              "nutrition": {
-                "calories": hit.recipe.calories,
-                "fats": hit.recipe.totalNutrients.FAT.quantity,
-                "carbs": hit.recipe.totalNutrients.CHOCDF.quantity,
-                "protein": hit.recipe.totalNutrients.PROCNT.quantity
+              title: hit.recipe.label,
+              nutrition: {
+                calories: hit.recipe.calories,
+                fats: hit.recipe.totalNutrients.FAT.quantity,
+                carbs: hit.recipe.totalNutrients.CHOCDF.quantity,
+                protein: hit.recipe.totalNutrients.PROCNT.quantity
               },
-              "servings": hit.recipe.yield,
-              "url": hit.recipe.shareAs,
-              "image": hit.recipe.image,
-              "recipeReadable": hit.recipe.ingredientLines
+              servings: hit.recipe.yield,
+              url: hit.recipe.shareAs,
+              image: hit.recipe.image,
+              recipeReadable: hit.recipe.ingredientLines,
+              isSelected: false,
+              updateChild: true
             })} )
+            
           });
         }
       })
@@ -71,6 +79,7 @@ class RecipeList extends React.Component {
     }
 
     componentDidMount() {
+      this.getIngredients();
       this.getRecipes();
     }
 
@@ -96,9 +105,10 @@ class RecipeList extends React.Component {
             <section className="recipe-list">
               {
                 this.state.recipes ? this.state.recipes.map((recipe, key) => {
+                  // console.log("RecipeID: ",recipe._id);
                   return <Recipe
                     key={key}
-                    isSelected={recipe._id !== undefined ? true : false}
+                    // isSelected={recipe._id !== undefined ? true : false}
                     data={recipe}
                   />
                 }) : ""
