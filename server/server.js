@@ -95,9 +95,9 @@ app.get("/meals/", (req, res) => {
                 mealplans.push(newMealplan);
             }
 
-            
-
         }) //end of foreach recipe
+
+        //Mealplan.updateOne({mealplanDateupsert: true)
 
         res.json(mealplans);
         //console.log(mealplans);

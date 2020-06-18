@@ -12,7 +12,11 @@ class MealPlan extends React.Component {
   constructor () {
     super();
     this.state = {
-      recipes: [],
+      meals: [{
+        text: 'Breakfast',
+        startDate: new Date(2020, 5, 17, 7, 0),
+        endDate: new Date(2020, 5, 17, 9, 30)
+      }],
 
     };
 
@@ -44,14 +48,26 @@ class MealPlan extends React.Component {
   getMeals() {
     axios.get("http://localhost:3001/meals/")
     .then (response => {
-
       //Re-shape the response.data to match the Scheduler's needs
+      // this.setState({
       
-      this.setState({
-        meals: response.data
-      });
+      let mealObjs = [];
 
-      //chain a then, saving the new dates and categories to MongoDb
+      response.data.forEach(mealplan => { 
+        let mealDate = mealplan.mealplanDate.split('T')[0];
+        mealplan.meals.forEach( (meal, key) => {
+          mealObjs.push (
+            {
+              text:      meal.title,
+              startDate: new Date(mealDate+ ((key % 2 === 0) ? 'T12:30:00' : 'T17:30:00')),
+              endDate:   new Date(mealDate+((key % 2 === 0) ? 'T2:30:00' : 'T19:30:00'))
+            }
+          );
+        })
+      });
+      this.setState({
+        meals: mealObjs
+      });
     })
     .catch(error => {
       console.error(error);
@@ -71,7 +87,7 @@ class MealPlan extends React.Component {
   render() {
     return (
       <Scheduler
-        dataSource={this.meals}
+        dataSource={this.state.meals}
         views={views}
         currentView="agenda"
         defaultCurrentDate={currentDate}
