@@ -7,116 +7,8 @@ const MealplanSchema = new Schema({
         type: Date,
         required: false
     },
-    meals: {
-        breakfast: {
-            title: {
-                type: String,
-                required: true
-            },
-            nutrition: {
-                calories: {
-                    type: Number,
-                    required: false
-                },
-                fats: {
-                    type: Number,
-                    required: false
-                },
-                carbs: {
-                    type: Number,
-                    required: false
-                },
-                protein: {
-                    type: Number,
-                    required: false
-                }
-            },
-            url: {
-                type: String,
-                required: true
-            },
-            image: {
-                type: String,
-                required: true
-            },
-            recipeReadable: {   
-                text: String,
-                required: false
-            }
-        },
-        lunch: {
-            title: {
-                type: String,
-                required: true
-            },
-            nutrition: {
-                calories: {
-                    type: Number,
-                    required: false
-                },
-                fats: {
-                    type: Number,
-                    required: false
-                },
-                carbs: {
-                    type: Number,
-                    required: false
-                },
-                protein: {
-                    type: Number,
-                    required: false
-                }
-            },
-            url: {
-                type: String,
-                required: true
-            },
-            image: {
-                type: String,
-                required: true
-            },
-            recipeReadable: {   
-                text: String,
-                required: false
-            }
-        },
-        dinner: {
-            title: {
-                type: String,
-                required: true
-            },
-            nutrition: {
-                calories: {
-                    type: Number,
-                    required: false
-                },
-                fats: {
-                    type: Number,
-                    required: false
-                },
-                carbs: {
-                    type: Number,
-                    required: false
-                },
-                protein: {
-                    type: Number,
-                    required: false
-                }
-            },
-            url: {
-                type: String,
-                required: true
-            },
-            image: {
-                type: String,
-                required: true
-            },
-            recipeReadable: {   
-                text: String,
-                required: false
-            }
-        },
-        snacks: {
+    meals: [
+        {
             title: {
                 type: String,
                 required: true
@@ -152,7 +44,7 @@ const MealplanSchema = new Schema({
                 required: false
             }
         }
-    }
+    ]
 });
 
 // Export the Schema

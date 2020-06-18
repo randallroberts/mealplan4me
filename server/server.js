@@ -34,53 +34,73 @@ app.get("/meals/", (req, res) => {
     Promise.all([p2, p1])
     .then(response => {
 
-    let meals = response[1];
-    let recipes = response[0];
+        let mealplans = response[1];
+        let recipes = response[0];
+
+        console.log("MongoDB init mealplans:", mealplans);
+
+        //Start with today's mealplan
+        let d = new Date();
+        //Get a list of the recipes that have not been added to a mealplan yet
+        let unassignedRecipes = recipes.filter(recipe => !recipe.dateToMake);
+
+        unassignedRecipes.forEach(recipe => {
+
+            // console.log("Starting loop. mealplans:",mealplans);
+            // console.log("newmp.meals:",newMealplan.meals);
             
-    //for the next two weeks, create mealplans
-    let now = new Date();
-    let twoWeeks = new Date();
-    twoWeeks.setDate(now.getDate() + 14);
-
-    let daysOfYear = []; //don't care about this
-
-    //For the next 14 days, assign saved recipes to mealplan
-    for (let d = new Date(); d <= twoWeeks; d.setDate(d.getDate() + 1)) {
-        
-        let newMealplan = {
-            mealplanDate : d,
-            meals: {}
-        };
-        
-        //if the mealplan array doesn't have an object for that day, create it
-        if (meals.filter(meal => meal.mealplanDate.toDateString() === d.toDateString()).length > 0) {
-            console.log("Loading mealplan for", d.toDateString());
-            newMealplan = meals.filter(meal => meal.mealplanDate.toDateString());
-        }
-
-        //for each meal category in that day's mealplan object
-        mealCats = ["breakfast", "lunch", "dinner", "snacks"];
-        mealCats.forEach (cat => {
-            let unassignedRecipes = recipes.filter(recipe => !recipe.dateToMake);
-            // if the meal category doesn't exist in the day's meal plan
-            if (!newMealplan.meals[cat] && unassignedRecipes.length > 0) {
-                
-                //assign it a random recipe from response.data.filter(recipe => !recipe.dateToMake)
-                // console.log("Remaining recipes:", unassignedRecipes);
-                let index = Math.floor(Math.random() * unassignedRecipes.length);
-                //Mark the recipe as being made today
-                unassignedRecipes[index].dateToMake = d;
-                newMealplan.meals[cat] = unassignedRecipes[index];
+            let newMealplan = {};
+            //if the mealplan array exists for that day, get it
+            newMealplan = mealplans.find(meal => meal.mealplanDate.toDateString() === d.toDateString())
+                        
+            //if today's mealplan doesn't exist, create it
+            if (newMealplan === undefined || newMealplan.meals === undefined) {
+                newMealplan = new Object();
+                newMealplan = 
+                {
+                    mealplanDate: new Date(d),
+                    meals: []
+                }
+                console.log("New Mealplan created:", newMealplan);
             }
-        })
+            // console.log("mealPlanDate:", newMealplan.mealplanDate.toDateString());
+            // console.log("d:", d.toDateString());
 
-        console.log(newMealplan);
-        // meals.push(); //change this to adding a new Mealplan object
-    }
-        
-        res.json(recipes);
-        
-        console.log(meals);
+            //Assign up to 2 random meals per day
+            if (newMealplan.meals.length < 2) {
+                recipe.dateToMake = d;
+                newMealplan.meals.push(
+                    {
+                        title: recipe.title,
+                        nutrition: {
+                            calories: recipe.nutrition.calories,
+                            fats: recipe.nutrition.fats,
+                            carbs: recipe.nutrition.carbs,
+                            protein: recipe.nutrition.protein,
+                        },
+                        url: recipe.url,
+                        image: recipe.image,
+                        recipeReadable: recipe.recipeReadable
+                    }
+                )
+            }
+            // console.log(newMealplan, "Length: "+ newMealplan.meals.length);
+            
+            //If the day has 2 random meals assigned, move on to the next day
+            if (newMealplan.meals.length === 2) {
+                d.setDate(d.getDate() + 1);
+                // console.log("Two meals in NewMealPlan, moving to next day! ", d);
+                // console.log("mealplan date: ", newMealplan.mealplanDate)
+            } else if (newMealplan.meals.length === 1 ) {
+                mealplans.push(newMealplan);
+            }
+
+            
+
+        }) //end of foreach recipe
+
+        res.json(mealplans);
+        //console.log(mealplans);
     })
     .catch(function(err) {
         console.log(err);
