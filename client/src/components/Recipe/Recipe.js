@@ -1,5 +1,5 @@
 import React from 'react';
-import Select from 'react-select';
+// import Select from 'react-select';
 import axios from 'axios';
 import './Recipe.scss';
 
@@ -93,16 +93,16 @@ class Recipe extends React.Component {
               />
               </div>
               </button>
-              <Select
+              {/* <Select
                 className="recipe__select"
                 name="recipeCategory"
                 options={this.meals}
                 defaultOptions={this.meals}
                 defaultValue={this.meals.filter(option => option.label === 'Any')}
-              />
+              /> */}
               {/* <hr className="recipe__divider" /> */}
               <div className="recipe__ingredients">
-                {this.props.data.url}
+                {this.props.data.recipeReadable}
               </div>
               <input name="title"
                 type="hidden"

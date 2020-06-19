@@ -52,6 +52,7 @@ class RecipeList extends React.Component {
             })
           });
         } else {
+          console.log(response.data)
           //if we got the recipe from Edamam, re-shape to match MongoDB structure
           this.setState({
             recipes: response.data.hits.map(hit => { return ({
@@ -65,7 +66,7 @@ class RecipeList extends React.Component {
               servings: hit.recipe.yield,
               url: hit.recipe.shareAs,
               image: hit.recipe.image,
-              recipeReadable: hit.recipe.ingredientLines,
+              recipeReadable: hit.recipe.ingredientLines.join(', '),
               isSelected: false,
               updateChild: true
             })} )
