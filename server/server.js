@@ -506,7 +506,7 @@ app.post('/ingredient/:ingr', (req, res) => {
                 },
                 datePurchased: Date.now(),
                 store: req.body.store ? req.body.store : "Uncategorized",
-                price: 0,
+                price: req.body.price,
                 nutrition: {
                     calories: response.data.parsed[0].food.nutrients.ENERC_KCAL,
                     protein: response.data.parsed[0].food.nutrients.PROCNT,

@@ -50,7 +50,8 @@ const IngredientSchema = new Schema({
     },
     price: {
         type: Number,
-        required: false
+        required: true,
+        default: 0
     },
     nutrition: {
         calories: {
