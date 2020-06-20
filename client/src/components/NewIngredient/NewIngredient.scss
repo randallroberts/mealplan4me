@@ -3,6 +3,10 @@
 @import "../../global/reset";
 
 .new-ingredient {
+    
+    width: 100%;
+    max-width: 350px;
+    
     border: none;
     border-radius: 4px;
     margin: $padding-std;
@@ -22,6 +26,7 @@
     }
 
     &__input {
+        width: 100%;
         font-family: 'Roboto';
         font-size: 16px;
 

@@ -22,8 +22,12 @@
 .main {
   width: 100%;
   padding: $padding-std;
-  
+  flex-wrap: wrap;
   display: flex;
-  flex-wrap: nowrap;
+  
   flex-direction: row;
+  @include tablet {
+    flex-wrap: nowrap;
+  }
+  
 }

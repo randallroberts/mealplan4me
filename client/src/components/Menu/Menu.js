@@ -25,11 +25,11 @@ function Menu() {
                 Meal Plan
               </NavLink>
             </li>
-            <li className="menu__item menu__item--outer">
+            {/* <li className="menu__item menu__item--outer">
               <NavLink to="/goals" className="menu__link" activeClassName="menu__link--active">
                 Goals
               </NavLink>
-            </li>
+            </li> */}
           </ul>
         </nav>
   );
