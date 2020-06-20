@@ -1,7 +1,8 @@
 import React from 'react';
 import './Ingredient.scss';
-import infoIcon from "../../assets/icons/iconmonstr-info-8.png";
+import trashIcon from "../../assets/icons/trash.svg";
 import defaultImg from "../../assets/images/mealPlanLogo.PNG";
+import axios from 'axios';
 
 class Ingredient extends React.Component {
     constructor () {
@@ -25,18 +26,33 @@ class Ingredient extends React.Component {
       this.setState({ details: !this.state.details });
     }
 
+    deleteIngredient() {
+      axios.delete(`http://localhost:3001/ingredient/${this.props.data._id}`)
+      .then(response => {
+        this.setState({ 
+          recipeId: response.data._id || null,
+          isSelected: !this.state.isSelected
+        });
+      })
+      .catch(error => {
+        console.error(error);
+      });
+    }
+    
+
     render () {
         return (
           <>
-            <div className={this.state.isSelected ? "ingredient ingredient--selected" : "ingredient"} >
+            <div id={this.props.data._id} className={this.state.isSelected ? "ingredient ingredient--selected" : "ingredient"} >
               <div className="ingredient__overview">
                 <p name="ingr" onClick={ this.props.showDetails ? this.toggleDetails.bind(this) : this.toggleSelection.bind(this)}>
                   {this.props.data.name}
                 </p>
                 <img
+                  onClick={this.deleteIngredient.bind(this)}
                   className="ingredient__info-icon"
-                  src={infoIcon}
-                  alt="Click for more info"
+                  src={trashIcon}
+                  alt="Delete this ingredient from the list"
                 />
               </div>
               <div className={this.state.details === true ? "ingredient__details ingredient__details--show" : "ingredient__details ingredient__details--hide"}>
