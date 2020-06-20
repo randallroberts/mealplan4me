@@ -61,6 +61,8 @@ class FoodStorage extends React.Component {
       .catch(error => {
         console.error(error);
       });
+
+      e.target.reset();
     }
 
     componentDidMount() {
