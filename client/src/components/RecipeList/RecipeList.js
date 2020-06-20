@@ -13,7 +13,6 @@ class RecipeList extends React.Component {
       };
 
       this.selectedIngredients = [];
-      // this.selectedRecipes = [];
     }
 
     //Get all ingredients 
@@ -45,7 +44,7 @@ class RecipeList extends React.Component {
         if (ingrQuery === "") {
           this.selectedRecipes = response.data;
           this.setState({
-              recipes: response.data.map(recipe => {
+            recipes: response.data.map(recipe => {
               recipe.isSelected = true;
               recipe.updateChild = true;
               return recipe;
