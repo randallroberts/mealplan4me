@@ -4,6 +4,8 @@
 
 .ingredient {
     padding: 4px $padding-std;
+    width: 100%;
+    max-width: 350px;
 
     &--selected {
         border: 3px solid $text-field-border-selected;
