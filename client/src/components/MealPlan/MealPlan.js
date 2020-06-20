@@ -1,4 +1,5 @@
 import React from 'react';
+import RecipeDetail from '../RecipeDetail';
 import Scheduler from 'devextreme-react/scheduler';
 import 'devextreme/dist/css/dx.common.css';
 import 'devextreme/dist/css/dx.light.css';
@@ -17,31 +18,9 @@ class MealPlan extends React.Component {
         startDate: new Date(2020, 5, 17, 7, 0),
         endDate: new Date(2020, 5, 17, 9, 30)
       }],
-
+      displayMeal: {}
     };
 
-    this.meals = [
-      {
-        text: 'Breakfast',
-        startDate: new Date(2020, 5, 17, 7, 0),
-        endDate: new Date(2020, 5, 17, 9, 30)
-      },
-      {
-        text: 'Lunch',
-        startDate: new Date(2020, 5, 17, 11, 0),
-        endDate: new Date(2020, 5, 17, 13, 30)
-      },
-      {
-        text: 'Dinner',
-        startDate: new Date(2020, 5, 17, 16, 0),
-        endDate: new Date(2020, 5, 17, 20, 0)
-      },
-      {
-        text: 'Snacks',
-        startDate: new Date(2020, 5, 17, 20, 30),
-        endDate: new Date(2020, 5, 17, 22, 30)
-      }
-    ];
   }
   
   //Get Meals the user has selected before
@@ -49,8 +28,6 @@ class MealPlan extends React.Component {
     axios.get("http://localhost:3001/meals/")
     .then (response => {
       //Re-shape the response.data to match the Scheduler's needs
-      // this.setState({
-      
       let mealObjs = [];
 
       response.data.forEach(mealplan => { 
@@ -66,7 +43,8 @@ class MealPlan extends React.Component {
         })
       });
       this.setState({
-        meals: mealObjs
+        meals: mealObjs,
+        displayMeal: response.data[0].meals[0]
       });
     })
     .catch(error => {
@@ -86,15 +64,17 @@ class MealPlan extends React.Component {
 
   render() {
     return (
-      <Scheduler
-        dataSource={this.state.meals}
-        views={views}
-        currentView="agenda"
-        defaultCurrentDate={currentDate}
-        width={500}
-        onAppointmentClick={this.onAppointmentClick}
-        startDayHour={9} >
-        </Scheduler>
+      <div className="mealplan">
+        <Scheduler
+          dataSource={this.state.meals}
+          views={views}
+          currentView="agenda"
+          defaultCurrentDate={currentDate}
+          width={500}
+          onAppointmentClick={this.onAppointmentClick}
+          startDayHour={9} />
+        <RecipeDetail data={this.state.displayMeal} />
+      </div>
     );
   }
 }
