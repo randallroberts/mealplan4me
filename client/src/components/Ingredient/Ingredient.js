@@ -43,17 +43,18 @@ class Ingredient extends React.Component {
               </div>
               <div className={this.state.details === true ? "ingredient__details ingredient__details--show" : "ingredient__details ingredient__details--hide"}>
                 <img className="ingredient__img" src={this.props.data.image ? this.props.data.image : defaultImg } alt={this.props.data.name} />
-                <p>
+                {/* <p>
                   Quantity: {this.props.data.measurement.quantity} {this.props.data.measurement.unit}
+                </p> */}
+                <p className="ingredient__details-section">
+                  Purchased: {this.props.data.datePurchased.split("T")[0]}
                 </p>
-                <p>
-                  Purchased: {this.props.data.datePurchased}
-                </p>
-                <ul>
-                  <li>From:{this.props.data.store}</li>
-                  <li>For: ${this.props.data.price}</li>
+                <ul className="ingredient__list">
+                  <li>From: {this.props.data.store}</li>
+                  <li>Cost: ${this.props.data.price}</li>
                 </ul>
-                <ul>
+                <p className="ingredient__details-section">Nutritional Info (per serving):</p>
+                <ul className="ingredient__list">
                   <li>Cal: {this.props.data.nutrition.calories}</li>
                   <li>Prot: {this.props.data.nutrition.protein}</li>
                   <li>Fats: {this.props.data.nutrition.fats}</li>

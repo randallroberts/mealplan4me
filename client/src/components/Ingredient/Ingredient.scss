@@ -29,6 +29,7 @@
 
     &__details {
         width: 100%;
+        max-width: 320px;
         padding: $padding-std;
         // margin-left: 24px;
         
@@ -37,13 +38,23 @@
         }
     
         &--show {
-            display: unset;
+            display: inherit;
+        }
+
+        &-section {
+            margin: 8px 0;
+            font-weight: bold;
         }
     }
     
     &__img {
         width: 100%;
         object-fit: cover;
+        border-radius: 4px;
     }
-    
+
+    &__list {
+        padding-left: 20px;
+    }
+
 }
