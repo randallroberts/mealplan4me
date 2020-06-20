@@ -12,6 +12,7 @@ class FoodStorage extends React.Component {
 
       this.categories = [];
       this.addIngredient = this.addIngredient.bind(this);
+      this.deleteIngredient = this.deleteIngredient.bind(this);
     }
 
     updateIngredients (newIngr) {
@@ -65,6 +66,28 @@ class FoodStorage extends React.Component {
       e.target.reset();
     }
 
+    remIngrFromState(id) {
+      let newState = this.state.ingredients.slice();
+      newState.splice(newState.findIndex(ingr => ingr._id === id));
+      console.log("Removed", id, newState);
+
+      this.setState({ 
+        ingredients: newState
+      });
+    }
+
+    deleteIngredient(e) {
+      e.preventDefault();
+      
+      axios.delete(`http://localhost:3001/ingredient/${e.target.id}`)
+      .then(response => {
+        this.remIngrFromState(response.data);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+    }
+
     componentDidMount() {
       this.getIngredients();
     }
@@ -79,6 +102,7 @@ class FoodStorage extends React.Component {
                   this.state.ingredients.map( (ingredient, key) => {
                     return ( <Ingredient 
                       key={key}
+                      deleteIngredient={this.deleteIngredient}
                       data={ingredient}
                       showDetails={false}
                       suggestIngredient={this.props.suggestIngredient}
@@ -94,6 +118,7 @@ class FoodStorage extends React.Component {
                   return ( <FoodCategory
                     key={key}
                     category={category}
+                    deleteIngredient={this.deleteIngredient}
                     ingredients={this.state.ingredients
                       .filter(ingredient => ingredient.category === category)}
                   />)

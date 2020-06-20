@@ -15,6 +15,7 @@ class FoodCategory extends React.Component {
                 {this.props.ingredients.map((ingr, key) => {
                   return <Ingredient 
                     key={key}
+                    deleteIngredient={this.props.deleteIngredient}
                     data={ingr}
                     showDetails={true} />
                 })}

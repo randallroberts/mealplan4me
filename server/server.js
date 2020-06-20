@@ -557,7 +557,7 @@ app.delete('/ingredient/:id', function (req, res) {
     });
     
     //Send back confirmation
-    res.status(200).json('Successfully removed Ingredient from Saved Ingredients');
+    res.status(200).json(req.params.id);
 
 });
 
