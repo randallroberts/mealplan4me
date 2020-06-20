@@ -53,7 +53,8 @@ class FoodStorage extends React.Component {
       .post(`http://localhost:3001/ingredient/${e.target.ingName.value}`, {
         "userId": "Randall",
         "store": e.target.ingStore.value,
-        "category": e.target.ingCategory.value
+        "category": e.target.ingCategory.value,
+        "price": e.target.ingCost.value
       })
       .then(response => {
         console.log("POST successful:", response.data);
@@ -68,7 +69,7 @@ class FoodStorage extends React.Component {
 
     remIngrFromState(id) {
       let newState = this.state.ingredients.slice();
-      newState.splice(newState.findIndex(ingr => ingr._id === id));
+      newState.splice(newState.findIndex(ingr => ingr._id === id), 1);
       console.log("Removed", id, newState);
 
       this.setState({ 

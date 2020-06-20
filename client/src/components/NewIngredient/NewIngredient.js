@@ -107,6 +107,12 @@ class NewIngredient extends React.Component {
                 defaultOptions={this.defaultStores}
                 loadOptions={this.searchStores}
               />
+              <input
+                className="new-ingredient__input"
+                type="number"
+                name="ingCost"
+                placeholder="$0"
+              />
                 
                 {/* measurement.quantity
                   measurement.unit
