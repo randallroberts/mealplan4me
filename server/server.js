@@ -239,7 +239,7 @@ app.post('/recipe/', (req, res) => {
 /*
 * DELETE /recipe/:id
 *
-* Response: ???
+* Response: Success message
 */
 
 app.delete('/recipe/:id', function (req, res) {
@@ -536,6 +536,29 @@ app.post('/ingredient/:ingr', (req, res) => {
      catch(err){
         console.error("Couldn't connect to Edamam", err);
      }
+});
+
+/*
+* DELETE /ingredient/:id
+*
+* Response: Success message
+*/
+
+app.delete('/ingredient/:id', function (req, res) {
+
+    //If there's no id provided, return a 400 error
+    if (!req.params.id) {
+        res.status(400).json({error: 'id not found in DELETE parameters'});
+        return;
+    }
+    
+    Ingredient.findByIdAndDelete(req.params.id, (err) => {
+        err ? console.error(err) : console.log("Removed Ingredient from Saved Ingredients");
+    });
+    
+    //Send back confirmation
+    res.status(200).json('Successfully removed Ingredient from Saved Ingredients');
+
 });
 
 app.listen(apiPort, () => console.log(`Server running on port ${apiPort}`));
