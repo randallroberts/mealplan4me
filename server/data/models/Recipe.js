@@ -47,16 +47,9 @@ const RecipeSchema = new Schema({
         required: true
     },
     recipeReadable: {   
-        text: String,
+        type: String,
         required: false
     }
-    // ],
-    // recipeRaw: [
-    //     {   
-    //         text: String,
-    //         weight: Number
-    //     }
-    // ]
 });
 
 // Export the Schema

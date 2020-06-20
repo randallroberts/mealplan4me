@@ -207,6 +207,7 @@ app.get("/recipe/:id", (req, res) => {
  */
 
 app.post('/recipe/', (req, res) => {
+
     //Store result in MongoDB
     const newRecipe = new Recipe({
         title: req.body.title,
@@ -220,7 +221,6 @@ app.post('/recipe/', (req, res) => {
         url: req.body.url,
         image: req.body.image,
         recipeReadable: req.body.recipeReadable
-        // recipeRaw: req.body.ingredients
     });
 
     Recipe.create(newRecipe)

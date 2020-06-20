@@ -110,7 +110,7 @@ class Recipe extends React.Component {
               />
               <input name="calories"
                 type="hidden"
-                value={this.props.data.calories}
+                value={this.props.data.nutrition.calories}
               />
               <input name="fats"
                 type="hidden"

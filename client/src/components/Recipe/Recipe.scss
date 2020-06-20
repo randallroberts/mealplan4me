@@ -61,10 +61,10 @@
 
         overflow: hidden;
         text-overflow: clip;
-        // display: -webkit-box;
+        display: -webkit-box;
         
-        // -webkit-line-clamp: 3;
-        // -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
 
         /* For inferior browsers */
         // line-height: 1rem;
