@@ -21,6 +21,8 @@ class MealPlan extends React.Component {
       displayMeal: {}
     };
 
+    this.onAppointmentClick = this.onAppointmentClick.bind(this);
+
   }
   
   //Get Meals the user has selected before
@@ -35,9 +37,19 @@ class MealPlan extends React.Component {
         mealplan.meals.forEach( (meal, key) => {
           mealObjs.push (
             {
-              text:      meal.title,
+              _id: meal._id,
+              text: meal.title,
+              title: meal.title,
+              image: meal.image,
+              nutrition: {
+                calories: meal.nutrition.calories,
+                carbs: meal.nutrition.carbs,
+                fats: meal.nutrition.fats,
+                protein: meal.nutrition.protein,
+              },
+              recipeReadable: meal.recipeReadable,
               startDate: new Date(mealDate+ ((key % 2 === 0) ? 'T12:30:00' : 'T17:30:00')),
-              endDate:   new Date(mealDate+((key % 2 === 0) ? 'T2:30:00' : 'T19:30:00'))
+              endDate: new Date(mealDate+((key % 2 === 0) ? 'T2:30:00' : 'T19:30:00'))
             }
           );
         })
@@ -53,9 +65,9 @@ class MealPlan extends React.Component {
   }
 
   onAppointmentClick (e) {
-    console.log(e.appointmentData);
-
-    console.log(e.targetedAppointmentData);
+    this.setState({
+      displayMeal: this.state.meals[this.state.meals.findIndex(meal => meal._id === e.appointmentData._id)]
+    })
   }
 
   componentDidMount () {

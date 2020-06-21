@@ -71,6 +71,7 @@ app.get("/meals/", (req, res) => {
                 recipe.dateToMake = d;
                 newMealplan.meals.push(
                     {
+                        _id: recipe._id,
                         title: recipe.title,
                         nutrition: {
                             calories: recipe.nutrition.calories,
