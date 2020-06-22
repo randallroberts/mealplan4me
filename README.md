@@ -52,12 +52,14 @@ The backend server can similarly be run from its own subdirectory with nodemon s
 
 The Server API Id's and Keys can be generated for free at the following links:
 
-The below values can be populated from: https://developer.edamam.com/edamam-docs-recipe-api
-RECIPE_API_ID=
+The below values can be populated from: https://developer.edamam.com/edamam-docs-recipe-api 
+
+RECIPE_API_ID=  
 RECIPE_API_KEY=
 
-And the following values can be populated from: https://developer.edamam.com/food-database-api-docs
-NUTRITION_API_ID=
+And the following values can be populated from: https://developer.edamam.com/food-database-api-docs 
+
+NUTRITION_API_ID=  
 NUTRITION_API_KEY=
 
 Once you've registered for the API's, simply enter the provided ID and API Key, with no spaces, quotes or other special characters, after the = sign.
