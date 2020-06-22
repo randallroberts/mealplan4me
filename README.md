@@ -47,7 +47,20 @@ This is a MERN application:
 This git repo is divided into two parts: Client and Server, stored respectively in their own subdirectories.
 
 The client is a typical React install. NPM install and NPM start should be all that is necessary to start the frontend.
-The backend server can similarly be run from its own subdirectory with nodemon server.js
+
+The backend server can similarly be run from its own subdirectory with nodemon server.js. The server folder has a sample .env file included, which can be renamed to .env
+
+The Server API Id's and Keys can be generated for free at the following links:
+
+The below values can be populated from: https://developer.edamam.com/edamam-docs-recipe-api
+RECIPE_API_ID=
+RECIPE_API_KEY=
+
+And the following values can be populated from: https://developer.edamam.com/food-database-api-docs
+NUTRITION_API_ID=
+NUTRITION_API_KEY=
+
+Once you've registered for the API's, simply enter the provided ID and API Key, with no spaces, quotes or other special characters, after the = sign.
 
 ## Bigger Fish to Fry (Future Sprints)
 
