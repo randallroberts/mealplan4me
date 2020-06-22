@@ -79,12 +79,12 @@ class NewIngredient extends React.Component {
                   name="submitText"
                 >
                 </button>
-                <button
+                {/* <button
                   className="new-ingredient__btn new-ingredient__add-receipt"
                   alt="Scan Receipt"
                   name="submitImg"
                 >
-                </button>
+                </button> */}
               </div>
               <div className="new-ingredient__details new-ingredient__additional-details">
               {/* Food Category */}
